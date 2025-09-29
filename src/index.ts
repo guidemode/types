@@ -1,4 +1,12 @@
-// User and authentication types
+// Re-export all types from sub-modules
+export * from './auth'
+export * from './env'
+export * from './session'
+export * from './processor'
+export * from './metrics'
+export * from './settings'
+
+// Domain model types
 export interface User {
   id: string
   githubId: number
@@ -38,27 +46,6 @@ export interface ApiKey {
   createdBy: string
   revokedAt: string | null
   revokedBy: string | null
-}
-
-// Settings types
-export interface TenantSettings {
-  id: string
-  tenantId: string
-  tenantName: string
-  autoCleanupEnabled: boolean
-  autoCleanupDays: number
-  dataRetentionDays: number
-  notificationsEnabled: boolean
-  updatedAt: Date
-  updatedBy: string
-}
-
-export interface TenantSettingsUpdate {
-  tenantName?: string
-  autoCleanupEnabled?: boolean
-  autoCleanupDays?: number
-  dataRetentionDays?: number
-  notificationsEnabled?: boolean
 }
 
 // Team types
@@ -135,6 +122,10 @@ export interface CreateApiKeyRequest {
 export interface CreateApiKeyResponse {
   key: ApiKey
   plainTextKey: string
+}
+
+export interface RevokeApiKeyRequest {
+  keyId: string
 }
 
 // API response types

@@ -138,12 +138,15 @@ export type AssessmentCategory =
 
 export type AssessmentImportance = 'low' | 'medium' | 'high'
 
+export type AssessmentVersion = 'short' | 'medium' | 'long'
+
 export interface AssessmentQuestionConfig {
   id: string
   text: string
   type: AssessmentQuestionType
   category: AssessmentCategory
   importance: AssessmentImportance
+  version: AssessmentVersion[]
   required: boolean
   skipLabel?: string
   labels?: [string, string] // [min label, max label] for Likert scales
@@ -156,6 +159,7 @@ export interface AssessmentFilter {
   importance?: AssessmentImportance[]
   category?: AssessmentCategory[]
   required?: boolean
+  version?: AssessmentVersion
 }
 
 export interface AssessmentResponse {

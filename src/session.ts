@@ -17,6 +17,8 @@ export interface SessionFilesResponse {
   sessionStartTime: string | null
   sessionEndTime: string | null
   durationMs: number | null
+  processingStatus: ProcessingStatus
+  processedAt: string | null
   files: SessionFile[]
 }
 
@@ -71,6 +73,8 @@ export interface SessionFilesResponse {
   sessionStartTime: string | null
   sessionEndTime: string | null
   durationMs: number | null
+  processingStatus: ProcessingStatus
+  processedAt: string | null
   files: SessionFile[]
 }
 

@@ -150,7 +150,7 @@ export interface ConversationTurn {
 
 export interface SessionParser {
   name: string
-  parse(content: string): BaseSessionMessage[]
+  parse(content: string, provider?: string): BaseSessionMessage[]
   canParse(content: string): boolean
 }
 

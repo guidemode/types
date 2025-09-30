@@ -34,6 +34,8 @@ export interface AgentSession {
   durationMs: number | null
   processingStatus: ProcessingStatus
   processedAt: string | null
+  assessmentStatus: 'not_started' | 'in_progress' | 'completed'
+  assessmentCompletedAt: string | null
   createdAt: string
   uploadedAt: string
 }
@@ -76,7 +78,7 @@ export interface SessionFilters {
   provider?: string
   userFilter?: 'everyone' | 'mine'
   sortOrder?: 'newest' | 'oldest' | 'name-asc' | 'name-desc' | 'size-asc' | 'size-desc'
-  dateFilter?: 'today' | 'yesterday' | 'this-week' | 'last-week' | 'range'
+  dateFilter?: 'last24hrs' | 'today' | 'yesterday' | 'this-week' | 'last-week' | 'range'
   dateRange?: { from: string; to: string }
   limit?: number
   offset?: number

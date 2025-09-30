@@ -6,6 +6,7 @@ export type MetricType =
   | 'custom'
   | 'engagement'
   | 'quality'
+  | 'assessment'
   | 'performance.duration'
   | 'performance.response-time'
   | 'usage.tool-usage'
@@ -83,6 +84,20 @@ export interface CustomMetrics extends BaseMetrics {
   [customKey: string]: any
 }
 
+// Assessment metrics for user feedback
+export interface AssessmentMetrics extends BaseMetrics {
+  responses: Record<string, AssessmentAnswer>
+  completed_at: string
+  duration_seconds?: number
+  survey_type?: 'short' | 'standard' | 'full'
+}
+
+export type AssessmentAnswer =
+  | { type: 'likert'; value: number }
+  | { type: 'text'; value: string }
+  | { type: 'choice'; value: string }
+  | { type: 'skipped' }
+
 // Union type for all possible metrics
 export type SessionMetricsData =
   | PerformanceMetrics
@@ -90,6 +105,7 @@ export type SessionMetricsData =
   | ErrorMetrics
   | EngagementMetrics
   | QualityMetrics
+  | AssessmentMetrics
   | CustomMetrics
 
 // Metadata that can be attached to metrics
@@ -104,4 +120,54 @@ export interface MetricMetadata {
     session_type?: string
     [key: string]: any
   }
+}
+
+// Assessment system types
+export type AssessmentStatus = 'not_started' | 'in_progress' | 'completed'
+
+export type AssessmentQuestionType = 'likert-5' | 'likert-7' | 'text' | 'choice'
+
+export type AssessmentCategory =
+  | 'usefulness'
+  | 'trust'
+  | 'cognitive'
+  | 'learning'
+  | 'satisfaction'
+  | 'comparison'
+  | 'reflection'
+
+export type AssessmentImportance = 'low' | 'medium' | 'high'
+
+export interface AssessmentQuestionConfig {
+  id: string
+  text: string
+  type: AssessmentQuestionType
+  category: AssessmentCategory
+  importance: AssessmentImportance
+  required: boolean
+  skipLabel?: string
+  labels?: [string, string] // [min label, max label] for Likert scales
+  choices?: string[] // For choice questions
+  placeholder?: string // For text questions
+  helpText?: string
+}
+
+export interface AssessmentFilter {
+  importance?: AssessmentImportance[]
+  category?: AssessmentCategory[]
+  required?: boolean
+}
+
+export interface AssessmentResponse {
+  questionId: string
+  answer: AssessmentAnswer
+  timestamp: string
+}
+
+export interface AssessmentSession {
+  sessionId: string
+  status: AssessmentStatus
+  responses: AssessmentResponse[]
+  startedAt?: string
+  completedAt?: string
 }

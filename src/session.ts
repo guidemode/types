@@ -19,6 +19,16 @@ export interface SessionFilesResponse {
   durationMs: number | null
   processingStatus: ProcessingStatus
   processedAt: string | null
+  aiModelSummary: string | null
+  aiModelQualityScore: number | null
+  aiModelMetadata: any | null
+  project?: {
+    id: string
+    name: string
+    gitRemoteUrl: string | null
+    cwd: string
+    detectedType: string | null
+  } | null
   files: SessionFile[]
 }
 
@@ -38,6 +48,9 @@ export interface AgentSession {
   processedAt: string | null
   assessmentStatus: 'not_started' | 'in_progress' | 'completed'
   assessmentCompletedAt: string | null
+  aiModelSummary: string | null
+  aiModelQualityScore: number | null
+  aiModelMetadata: any | null
   createdAt: string
   uploadedAt: string
 }
@@ -66,23 +79,12 @@ export interface SessionsResponse {
   }
 }
 
-export interface SessionFilesResponse {
-  sessionId: string
-  provider: string
-  projectName: string
-  sessionStartTime: string | null
-  sessionEndTime: string | null
-  durationMs: number | null
-  processingStatus: ProcessingStatus
-  processedAt: string | null
-  files: SessionFile[]
-}
-
 export interface SessionFilters {
   provider?: string
+  projectId?: string
   userFilter?: 'everyone' | 'mine'
   sortOrder?: 'newest' | 'oldest' | 'name-asc' | 'name-desc' | 'size-asc' | 'size-desc'
-  dateFilter?: 'last24hrs' | 'today' | 'yesterday' | 'this-week' | 'last-week' | 'range'
+  dateFilter?: 'all' | 'last24hrs' | 'today' | 'yesterday' | 'this-week' | 'last-week' | 'range'
   dateRange?: { from: string; to: string }
   limit?: number
   offset?: number

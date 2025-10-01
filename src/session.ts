@@ -22,6 +22,8 @@ export interface SessionFilesResponse {
   aiModelSummary: string | null
   aiModelQualityScore: number | null
   aiModelMetadata: any | null
+  username: string
+  userAvatarUrl: string | null
   project?: {
     id: string
     name: string

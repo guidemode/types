@@ -1,5 +1,5 @@
 {
-  "name": "@guideai/types",
+  "name": "@guideai-dev/types",
   "version": "0.1.1",
   "description": "Shared TypeScript types for GuideAI",
   "type": "module",

@@ -84,6 +84,53 @@ export interface UpdateTeamMemberRoleRequest {
   role: 'admin' | 'member'
 }
 
+// GitHub Teams and Sync types
+export interface Team {
+  id: string
+  tenantId: string
+  githubOrgId: number
+  githubOrgLogin: string
+  githubOrgName: string
+  githubTeamId: number
+  name: string
+  slug: string
+  description?: string
+  avatarUrl?: string
+  parentTeamId?: string
+  privacy: 'secret' | 'closed'
+  githubCreatedAt: string
+  createdAt: string
+  updatedAt: string
+  lastSyncedAt: string
+}
+
+export interface TeamMemberAssignment {
+  teamId: string
+  userId: string
+  role: 'member' | 'maintainer'
+  createdAt: string
+}
+
+export interface GitHubSyncLog {
+  id: string
+  tenantId: string
+  githubOrgId: number
+  githubOrgLogin: string
+  githubOrgName: string
+  syncType: 'full' | 'members' | 'teams'
+  status: 'pending' | 'in_progress' | 'completed' | 'failed'
+  startedAt: string
+  completedAt?: string
+  stats?: {
+    usersCreated: number
+    usersUpdated: number
+    teamsCreated: number
+    teamsUpdated: number
+    membershipsCreated: number
+  }
+  errorMessage?: string
+}
+
 // GitHub integration types
 export interface GitHubRepository {
   id: number

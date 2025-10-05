@@ -6,6 +6,8 @@ export interface User {
   email: string
   name: string
   avatarUrl: string | null
+  isGlobalAdmin?: boolean
+  firstSessionUploadedAt?: Date | null
 }
 
 export interface AuthContext {

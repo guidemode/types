@@ -251,3 +251,98 @@ export interface TextContent {
   type: 'text'
   text: string
 }
+
+// Session upload types for desktop -> server sync
+export interface SessionUploadRequest {
+  provider: string
+  projectName: string
+  sessionId: string
+  fileName: string
+  filePath: string
+  content?: string // Optional base64 encoded JSONL - not required for metrics-only sync
+
+  // Optional timing fields (for metrics-only sync)
+  sessionStartTime?: string // ISO 8601
+  sessionEndTime?: string // ISO 8601
+  durationMs?: number
+
+  // Optional processing fields
+  processingStatus?: ProcessingStatus
+  queuedAt?: string // ISO 8601
+  processedAt?: string // ISO 8601
+
+  // Optional assessment fields
+  assessmentStatus?: 'not_started' | 'rating_only' | 'in_progress' | 'completed'
+  assessmentCompletedAt?: string // ISO 8601
+  assessmentRating?: number
+
+  // Optional AI model fields
+  aiModelSummary?: string
+  aiModelQualityScore?: number
+  aiModelMetadata?: any
+  aiModelPhaseAnalysis?: SessionPhaseAnalysis
+}
+
+export interface SessionUploadResponse {
+  success: boolean
+  sessionId: string
+  filePath?: string
+  size?: number
+}
+
+// Session metrics upload types
+export interface SessionMetricUpload {
+  sessionId: string
+  provider: string
+
+  // Performance metrics
+  responseLatencyMs?: number
+  taskCompletionTimeMs?: number
+  performanceTotalResponses?: number
+
+  // Usage metrics
+  readWriteRatio?: number
+  inputClarityScore?: number
+  readOperations?: number
+  writeOperations?: number
+  totalUserMessages?: number
+
+  // Error metrics
+  errorCount?: number
+  errorTypes?: string[]
+  lastErrorMessage?: string
+  recoveryAttempts?: number
+  fatalErrors?: number
+
+  // Engagement metrics
+  interruptionRate?: number
+  sessionLengthMinutes?: number
+  totalInterruptions?: number
+  engagementTotalResponses?: number
+
+  // Quality metrics
+  taskSuccessRate?: number
+  iterationCount?: number
+  processQualityScore?: number
+  usedPlanMode?: boolean
+  usedTodoTracking?: boolean
+  overTopAffirmations?: number
+  successfulOperations?: number
+  totalOperations?: number
+  exitPlanModeCount?: number
+  todoWriteCount?: number
+  overTopAffirmationsPhrases?: string[]
+  improvementTips?: string[]
+
+  // Custom metrics
+  customMetrics?: Record<string, any>
+}
+
+export interface SessionMetricsUploadRequest {
+  metrics: SessionMetricUpload[]
+}
+
+export interface SessionMetricsUploadResponse {
+  success: boolean
+  insertedCount: number
+}

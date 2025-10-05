@@ -174,4 +174,6 @@ export interface AssessmentSession {
   responses: AssessmentResponse[]
   startedAt?: string
   completedAt?: string
+  rating?: 'thumbs_up' | 'meh' | 'thumbs_down' | null
+  surveyType?: 'quick' | 'standard'
 }

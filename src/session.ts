@@ -1,6 +1,47 @@
 // Session and message types
 export type ProcessingStatus = 'pending' | 'processing' | 'completed' | 'failed'
 
+/**
+ * Session Phase Types
+ * Represents the different phases a coding session can go through
+ */
+export type SessionPhaseType =
+  | 'initial_specification'
+  | 'analysis_planning'
+  | 'plan_modification'
+  | 'plan_agreement'
+  | 'execution'
+  | 'interruption'
+  | 'task_assignment'
+  | 'completion'
+  | 'correction'
+  | 'final_completion'
+  | 'other'
+
+/**
+ * Phase in the session timeline
+ */
+export interface SessionPhase {
+  phaseType: SessionPhaseType
+  startStep: number
+  endStep: number
+  stepCount: number
+  summary: string
+  durationMs: number
+  timestamp?: string
+}
+
+/**
+ * Complete session phase analysis result
+ */
+export interface SessionPhaseAnalysis {
+  phases: SessionPhase[]
+  totalPhases: number
+  totalSteps: number
+  sessionDurationMs: number
+  pattern: string
+}
+
 export interface SessionsResponse {
   sessions: AgentSession[]
   pagination: {
@@ -22,6 +63,7 @@ export interface SessionFilesResponse {
   aiModelSummary: string | null
   aiModelQualityScore: number | null
   aiModelMetadata: any | null
+  aiModelPhaseAnalysis: SessionPhaseAnalysis | null
   username: string
   userAvatarUrl: string | null
   project?: {
@@ -53,6 +95,7 @@ export interface AgentSession {
   aiModelSummary: string | null
   aiModelQualityScore: number | null
   aiModelMetadata: any | null
+  aiModelPhaseAnalysis: SessionPhaseAnalysis | null
   createdAt: string
   uploadedAt: string
 }

@@ -274,7 +274,7 @@ export interface SessionUploadRequest {
   // Optional assessment fields
   assessmentStatus?: 'not_started' | 'rating_only' | 'in_progress' | 'completed'
   assessmentCompletedAt?: string // ISO 8601
-  assessmentRating?: number
+  assessmentRating?: 'thumbs_up' | 'meh' | 'thumbs_down' // Matches session_assessments.rating
 
   // Optional AI model fields
   aiModelSummary?: string

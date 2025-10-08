@@ -48,6 +48,9 @@ export interface ErrorMetrics extends BaseMetrics {
   last_error_message?: string
   recovery_attempts?: number
   fatal_errors?: number
+  metadata?: {
+    improvement_tips?: string[]
+  }
 }
 
 // Simplified engagement metrics - measures interruption rate and session length

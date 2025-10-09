@@ -51,6 +51,41 @@ export interface SessionsResponse {
   }
 }
 
+export interface SessionDetailResponse {
+  id: string
+  sessionId: string
+  provider: string
+  projectName: string
+  sessionStartTime: string | null
+  sessionEndTime: string | null
+  durationMs: number | null
+  fileName: string | null
+  fileSize: number | null
+  uploadedAt: string
+  processingStatus: ProcessingStatus
+  queuedAt: string | null
+  processedAt: string | null
+  coreMetricsStatus: ProcessingStatus
+  coreMetricsProcessedAt: string | null
+  assessmentStatus: 'not_started' | 'rating_only' | 'in_progress' | 'completed'
+  assessmentCompletedAt: string | null
+  assessmentRating: 'thumbs_up' | 'meh' | 'thumbs_down' | null
+  aiModelSummary: string | null
+  aiModelQualityScore: number | null
+  aiModelMetadata: any | null
+  aiModelPhaseAnalysis: SessionPhaseAnalysis | null
+  username: string
+  userAvatarUrl: string | null
+  project: {
+    id: string
+    name: string
+    gitRemoteUrl: string | null
+    cwd: string
+    detectedType: string | null
+  } | null
+}
+
+/** @deprecated Use SessionDetailResponse instead */
 export interface SessionFilesResponse {
   sessionId: string
   provider: string
@@ -90,8 +125,11 @@ export interface AgentSession {
   durationMs: number | null
   processingStatus: ProcessingStatus
   processedAt: string | null
-  assessmentStatus: 'not_started' | 'in_progress' | 'completed'
+  coreMetricsStatus: ProcessingStatus
+  coreMetricsProcessedAt: string | null
+  assessmentStatus: 'not_started' | 'rating_only' | 'in_progress' | 'completed'
   assessmentCompletedAt: string | null
+  assessmentRating: 'thumbs_up' | 'meh' | 'thumbs_down' | null
   aiModelSummary: string | null
   aiModelQualityScore: number | null
   aiModelMetadata: any | null

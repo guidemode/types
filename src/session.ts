@@ -60,6 +60,7 @@ export interface SessionDetailResponse {
   sessionEndTime: string | null
   durationMs: number | null
   fileName: string | null
+  filePathR2: string | null
   fileSize: number | null
   uploadedAt: string
   processingStatus: ProcessingStatus
@@ -116,8 +117,9 @@ export interface AgentSession {
   provider: string
   projectName: string
   sessionId: string
-  fileName: string
-  fileSize: number
+  fileName: string | null
+  filePath: string | null // Path to session file (R2 path for server, local path for desktop)
+  fileSize: number | null
   userId: string
   username: string
   sessionStartTime: string | null

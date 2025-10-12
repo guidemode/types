@@ -5,11 +5,12 @@ export * from './session'
 export * from './processor'
 export * from './metrics'
 export * from './settings'
+export * from './permissions'
 
 // Domain model types
 export interface User {
   id: string
-  githubId: number
+  githubId: number | null
   username: string
   email: string
   name: string
@@ -81,7 +82,7 @@ export interface TeamInvitation {
 
 export interface UpdateTeamMemberRoleRequest {
   userId: string
-  role: 'admin' | 'member'
+  role: 'owner' | 'admin' | 'member'
 }
 
 // GitHub Teams and Sync types

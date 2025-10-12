@@ -1,7 +1,7 @@
 // Auth context types
 export interface User {
   id: string
-  githubId: number
+  githubId: number | null
   username: string
   email: string
   name: string

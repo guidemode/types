@@ -76,6 +76,10 @@ export interface SessionDetailResponse {
   aiModelQualityScore: number | null
   aiModelMetadata: any | null
   aiModelPhaseAnalysis: SessionPhaseAnalysis | null
+  // Git tracking fields (session-specific)
+  gitBranch: string | null
+  firstCommitHash: string | null
+  latestCommitHash: string | null
   username: string
   userAvatarUrl: string | null
   project: {

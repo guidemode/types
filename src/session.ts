@@ -49,6 +49,7 @@ export interface SessionsResponse {
     offset: number
     hasMore: boolean
   }
+  totalSessionsOtherUsers?: number // Count of sessions by other users (when userFilter is 'mine' and no results)
 }
 
 export interface SessionDetailResponse {
@@ -162,6 +163,7 @@ export interface SessionsResponse {
     offset: number
     hasMore: boolean
   }
+  totalSessionsOtherUsers?: number // Count of sessions by other users (when userFilter is 'mine' and no results)
 }
 
 export interface SessionFilters {

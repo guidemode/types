@@ -14,6 +14,17 @@ export interface ProcessorContext {
   tenantId: string
   userId: string
   provider: string
+  // Optional git diff data from desktop app (not available in server context)
+  gitDiffData?: {
+    files: Array<{
+      path: string
+      stats: {
+        additions: number
+        deletions: number
+      }
+    }>
+    isUnstaged: boolean
+  }
 }
 
 export type { ParsedMessage, ParsedSession }

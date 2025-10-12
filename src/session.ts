@@ -141,6 +141,10 @@ export interface AgentSession {
   aiModelQualityScore: number | null
   aiModelMetadata: any | null
   aiModelPhaseAnalysis: SessionPhaseAnalysis | null
+  // Git tracking fields (session-specific)
+  gitBranch: string | null
+  firstCommitHash: string | null
+  latestCommitHash: string | null
   createdAt: string
   uploadedAt: string
 }

@@ -45,3 +45,12 @@ export interface GitHubManageInfo {
 export interface GitHubAppNameResponse {
   appName: string
 }
+
+export interface DeleteUserRequest {
+  email: string
+  confirm: string
+}
+
+export interface DeleteUserResponse {
+  logout: boolean
+}

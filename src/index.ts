@@ -160,6 +160,104 @@ export interface GitHubAppInstallationUpdate {
   selectedRepositories?: GitHubRepository[]
 }
 
+// GitHub Pull Request Webhook types
+export interface GitHubPRWebhookPayload {
+  action: 'opened' | 'synchronize' | 'reopened' | 'closed' | 'edited' | 'assigned' | 'unassigned' | 'labeled' | 'unlabeled'
+  number: number
+  pull_request: {
+    id: number
+    number: number
+    state: 'open' | 'closed'
+    title: string
+    body?: string
+    html_url: string
+    created_at: string
+    updated_at: string
+    merged: boolean
+    merged_at?: string
+    head: {
+      ref: string // branch name
+      sha: string // commit SHA
+      repo?: {
+        id: number
+        full_name: string
+      }
+    }
+    base: {
+      ref: string // branch name
+      sha: string // commit SHA
+      repo: {
+        id: number
+        full_name: string
+      }
+    }
+    user: {
+      login: string
+      id: number
+      avatar_url: string
+    }
+    commits: number
+  }
+  repository: {
+    id: number
+    name: string
+    full_name: string // "owner/repo"
+    private: boolean
+    owner: {
+      login: string
+      id: number
+    }
+  }
+  installation: {
+    id: number
+  }
+  sender: {
+    login: string
+    id: number
+  }
+}
+
+export interface GitHubCommit {
+  sha: string
+  commit: {
+    author: {
+      name: string
+      email: string
+      date: string
+    }
+    committer: {
+      name: string
+      email: string
+      date: string
+    }
+    message: string
+  }
+  author?: {
+    login: string
+    id: number
+  }
+  html_url: string
+}
+
+export interface PRSessionLink {
+  id: string
+  tenantId: string
+  sessionId: string
+  prUrl: string
+  prNumber: number
+  repoFullName: string
+  repoId: number
+  prTitle?: string
+  prHeadBranch?: string
+  prBaseBranch?: string
+  prHeadSha?: string
+  prState?: string
+  commentPosted: boolean
+  commentUrl?: string
+  linkedAt: string
+  updatedAt: string
+}
+
 // API Key types
 export interface CreateApiKeyRequest {
   name: string

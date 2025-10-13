@@ -6,6 +6,7 @@ export type CloudflareEnv = {
   RATE_LIMIT_KV?: any // KVNamespace type from @cloudflare/workers-types
   CLAUDE_API_KEY?: string // Claude API key for AI model processing
   GEMINI_API_KEY?: string // Gemini API key for AI model processing
+  APP_URL?: string // Application base URL for links in notifications
 }
 
 // Queue message types

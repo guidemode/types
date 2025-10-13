@@ -89,6 +89,16 @@ export interface SessionDetailResponse {
     cwd: string
     detectedType: string | null
   } | null
+  // Pull request information (if linked to a GitHub PR)
+  pullRequest?: {
+    url: string
+    number: number
+    title: string | null
+    state: string
+    headBranch: string
+    baseBranch: string
+    repoFullName: string
+  } | null
 }
 
 /** @deprecated Use SessionDetailResponse instead */

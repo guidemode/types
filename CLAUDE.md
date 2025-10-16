@@ -14,6 +14,11 @@ Centralized TypeScript type definitions shared across all GuideAI packages, prov
 ```
 src/
 ├── index.ts             # Main exports
+├── providers/           # Provider-specific Zod schemas (NEW)
+│   ├── index.ts         # Provider namespace exports
+│   └── claude/          # Claude Code JSONL schemas
+│       ├── index.ts     # Claude provider exports
+│       └── entries.ts   # Generated Zod schemas
 ├── api/                 # API request/response types
 ├── database/            # Database schema types
 ├── auth/                # Authentication types
@@ -68,6 +73,16 @@ pnpm test
     "types": "./dist/esm/index.d.ts",
     "import": "./dist/esm/index.js",
     "require": "./dist/cjs/index.js"
+  },
+  "./providers": {
+    "types": "./dist/esm/providers/index.d.ts",
+    "import": "./dist/esm/providers/index.js",
+    "require": "./dist/cjs/providers/index.js"
+  },
+  "./providers/claude": {
+    "types": "./dist/esm/providers/claude/index.d.ts",
+    "import": "./dist/esm/providers/claude/index.js",
+    "require": "./dist/cjs/providers/claude/index.js"
   }
 }
 ```
@@ -77,6 +92,53 @@ pnpm test
 - `dist/cjs/` - CommonJS build with type declarations
 
 ## Type Categories
+
+### Provider Schemas (Zod)
+
+**Runtime validation for AI coding assistant JSONL session logs**
+
+The `providers/` namespace contains auto-generated Zod schemas for different AI coding assistants (Claude Code, Cursor, Windsurf, etc.). These provide both runtime validation and compile-time type safety.
+
+#### Claude Code Provider
+
+```typescript
+import { Providers } from '@guideai-dev/types';
+import { AnyEntrySchema, isUserEntry } from '@guideai-dev/types/providers/claude';
+
+// Parse JSONL entry with runtime validation
+const entry = AnyEntrySchema.parse(JSON.parse(jsonLine));
+
+// Type-safe access with type guards
+if (isUserEntry(entry)) {
+  // TypeScript knows entry is User type
+  console.log(entry.message.content);
+  console.log(entry.uuid);
+}
+
+// Namespace import
+const entry2 = Providers.Claude.AnyEntrySchema.parse(jsonData);
+```
+
+**Available Schemas:**
+- `UserSchema` - User message entries
+- `AssistantSchema` - Assistant response entries
+- `SystemSchema` - System/meta entries
+- `SummarySchema` - Session summary entries
+- `UnknownSchema` - Debug entries (not in union)
+- `AnyEntrySchema` - Union of all known types
+
+**Type Guards:**
+- `isUserEntry(entry)` - Checks if entry is User type
+- `isAssistantEntry(entry)` - Checks if entry is Assistant type
+- `isSystemEntry(entry)` - Checks if entry is System type
+- `isSummaryEntry(entry)` - Checks if entry is Summary type
+
+**Utility Functions:**
+- `parseEntry(jsonLine)` - Parse and validate (throws on error)
+- `safeParseEntry(jsonLine)` - Parse safely (returns null on error)
+
+**Schema Generation:**
+See `provider-docs/SCHEMA_GENERATION.md` for how to generate schemas from JSONL files.
 
 ### API Types
 ```typescript
@@ -236,7 +298,7 @@ describe('UserResponse', () => {
 - `vitest`: Type testing framework
 
 ### Runtime
-- **None**: Pure type definitions, no runtime dependencies
+- `zod`: Zod schema validation (for provider schemas only)
 
 ## Integration Points
 

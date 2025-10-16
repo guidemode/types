@@ -7,6 +7,9 @@ export * from './metrics'
 export * from './settings'
 export * from './permissions'
 
+// Provider-specific schemas (Zod)
+export * as Providers from './providers'
+
 // Domain model types
 export interface User {
   id: string

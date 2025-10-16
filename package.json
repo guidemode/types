@@ -18,6 +18,26 @@
       "types": "./dist/esm/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
+    },
+    "./providers": {
+      "types": "./dist/esm/providers/index.d.ts",
+      "import": "./dist/esm/providers/index.js",
+      "require": "./dist/cjs/providers/index.js"
+    },
+    "./providers/claude": {
+      "types": "./dist/esm/providers/claude/index.d.ts",
+      "import": "./dist/esm/providers/claude/index.js",
+      "require": "./dist/cjs/providers/claude/index.js"
+    },
+    "./providers/codex": {
+      "types": "./dist/esm/providers/codex/index.d.ts",
+      "import": "./dist/esm/providers/codex/index.js",
+      "require": "./dist/cjs/providers/codex/index.js"
+    },
+    "./providers/opencode": {
+      "types": "./dist/esm/providers/opencode/index.d.ts",
+      "import": "./dist/esm/providers/opencode/index.js",
+      "require": "./dist/cjs/providers/opencode/index.js"
     }
   },
   "files": [
@@ -40,5 +60,8 @@
     "types",
     "typescript",
     "guideai"
-  ]
+  ],
+  "dependencies": {
+    "zod": "^3.25.0"
+  }
 }

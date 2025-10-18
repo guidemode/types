@@ -20,8 +20,8 @@
  */
 
 // Export provider namespaces as they are added
-export * as Claude from './claude';
-export * as Codex from './codex';
-export * as OpenCode from './opencode';
+export * as Claude from './claude'
+export * as Codex from './codex'
+export * as OpenCode from './opencode'
 // export * as Cursor from './cursor';
 // export * as Windsurf from './windsurf';

@@ -1,4 +1,4 @@
 /**
  * Codex provider type exports
  */
-export * from './entries';
+export * from './entries'

@@ -7,7 +7,7 @@
  * Total files processed: 495
  */
 
-import { z } from 'zod';
+import { z } from 'zod'
 
 // === SHARED SCHEMAS ===
 
@@ -17,26 +17,26 @@ import { z } from 'zod';
 const TextContentBlockSchema = z.object({
   type: z.literal('text'),
   text: z.string(),
-});
+})
 
 const ThinkingContentBlockSchema = z.object({
   type: z.literal('thinking'),
   thinking: z.string(),
   signature: z.string().optional(),
-});
+})
 
 const ToolUseContentBlockSchema = z.object({
   type: z.literal('tool_use'),
   id: z.string(),
   name: z.string(),
   input: z.record(z.unknown()),
-});
+})
 
 const ContentBlockSchema = z.union([
   TextContentBlockSchema,
   ThinkingContentBlockSchema,
   ToolUseContentBlockSchema,
-]);
+])
 
 /**
  * Shared usage statistics structure
@@ -51,10 +51,12 @@ const UsageSchema = z.object({
     ephemeral_5m_input_tokens: z.number(),
     ephemeral_1h_input_tokens: z.number(),
   }),
-  server_tool_use: z.object({
-    web_search_requests: z.number(),
-  }).optional(),
-});
+  server_tool_use: z
+    .object({
+      web_search_requests: z.number(),
+    })
+    .optional(),
+})
 
 /**
  * Thinking metadata configuration
@@ -63,7 +65,7 @@ const ThinkingMetadataSchema = z.object({
   level: z.string(),
   disabled: z.boolean(),
   triggers: z.array(z.unknown()),
-});
+})
 
 /**
  * Compact metadata for conversation compaction
@@ -71,7 +73,7 @@ const ThinkingMetadataSchema = z.object({
 const CompactMetadataSchema = z.object({
   trigger: z.string(),
   preTokens: z.number(),
-});
+})
 
 // === USER ENTRIES ===
 
@@ -97,33 +99,35 @@ const CompactMetadataSchema = z.object({
  * - isCompactSummary: Indicates a conversation compaction summary
  * - thinkingMetadata: Extended thinking configuration
  */
-export const UserSchema = z.object({
-  // === Core Required Fields ===
-  type: z.literal('user'),
-  uuid: z.string(),
-  timestamp: z.string(),
-  sessionId: z.string(),
-  version: z.string(),
-  cwd: z.string(),
-  gitBranch: z.string(),
-  userType: z.string(),
-  isSidechain: z.boolean(),
-  parentUuid: z.string().nullable(),
+export const UserSchema = z
+  .object({
+    // === Core Required Fields ===
+    type: z.literal('user'),
+    uuid: z.string(),
+    timestamp: z.string(),
+    sessionId: z.string(),
+    version: z.string(),
+    cwd: z.string(),
+    gitBranch: z.string(),
+    userType: z.string(),
+    isSidechain: z.boolean(),
+    parentUuid: z.string().nullable(),
 
-  // === Message Content ===
-  message: z.object({
-    role: z.literal('user'),
-    content: z.string(),
-  }),
+    // === Message Content ===
+    message: z.object({
+      role: z.literal('user'),
+      content: z.string(),
+    }),
 
-  // === Optional Fields ===
-  isMeta: z.boolean().optional(),
-  isVisibleInTranscriptOnly: z.boolean().optional(),
-  isCompactSummary: z.boolean().optional(),
-  thinkingMetadata: ThinkingMetadataSchema.optional(),
-}).strict();
+    // === Optional Fields ===
+    isMeta: z.boolean().optional(),
+    isVisibleInTranscriptOnly: z.boolean().optional(),
+    isCompactSummary: z.boolean().optional(),
+    thinkingMetadata: ThinkingMetadataSchema.optional(),
+  })
+  .strict()
 
-export type User = z.infer<typeof UserSchema>;
+export type User = z.infer<typeof UserSchema>
 
 // === ASSISTANT ENTRIES ===
 
@@ -147,38 +151,40 @@ export type User = z.infer<typeof UserSchema>;
  * - requestId: API request identifier
  * - isApiErrorMessage: Indicates an API error response
  */
-export const AssistantSchema = z.object({
-  // === Core Required Fields ===
-  type: z.literal('assistant'),
-  uuid: z.string(),
-  timestamp: z.string(),
-  sessionId: z.string(),
-  version: z.string(),
-  cwd: z.string(),
-  gitBranch: z.string(),
-  userType: z.string(),
-  isSidechain: z.boolean(),
-  parentUuid: z.string(),
+export const AssistantSchema = z
+  .object({
+    // === Core Required Fields ===
+    type: z.literal('assistant'),
+    uuid: z.string(),
+    timestamp: z.string(),
+    sessionId: z.string(),
+    version: z.string(),
+    cwd: z.string(),
+    gitBranch: z.string(),
+    userType: z.string(),
+    isSidechain: z.boolean(),
+    parentUuid: z.string(),
 
-  // === Message Content ===
-  message: z.object({
-    id: z.string(),
-    type: z.literal('message'),
-    role: z.literal('assistant'),
-    model: z.string(),
-    content: z.array(ContentBlockSchema),
-    stop_reason: z.string().nullable(),
-    stop_sequence: z.string().nullable(),
-    usage: UsageSchema,
-    container: z.null().optional(),
-  }),
+    // === Message Content ===
+    message: z.object({
+      id: z.string(),
+      type: z.literal('message'),
+      role: z.literal('assistant'),
+      model: z.string(),
+      content: z.array(ContentBlockSchema),
+      stop_reason: z.string().nullable(),
+      stop_sequence: z.string().nullable(),
+      usage: UsageSchema,
+      container: z.null().optional(),
+    }),
 
-  // === Optional Fields ===
-  requestId: z.string().optional(),
-  isApiErrorMessage: z.boolean().optional(),
-}).strict();
+    // === Optional Fields ===
+    requestId: z.string().optional(),
+    isApiErrorMessage: z.boolean().optional(),
+  })
+  .strict()
 
-export type Assistant = z.infer<typeof AssistantSchema>;
+export type Assistant = z.infer<typeof AssistantSchema>
 
 // === SYSTEM ENTRIES ===
 
@@ -206,30 +212,32 @@ export type Assistant = z.infer<typeof AssistantSchema>;
  * - compactMetadata: Metadata for compaction events
  * - toolUseID: Tool use identifier for tool-related events
  */
-export const SystemSchema = z.object({
-  // === Core Required Fields ===
-  type: z.literal('system'),
-  uuid: z.string(),
-  timestamp: z.string(),
-  sessionId: z.string(),
-  version: z.string(),
-  cwd: z.string(),
-  gitBranch: z.string(),
-  userType: z.string(),
-  isSidechain: z.boolean(),
-  parentUuid: z.string().nullable(),
-  subtype: z.string(),
-  content: z.string(),
-  level: z.string(),
-  isMeta: z.boolean(),
+export const SystemSchema = z
+  .object({
+    // === Core Required Fields ===
+    type: z.literal('system'),
+    uuid: z.string(),
+    timestamp: z.string(),
+    sessionId: z.string(),
+    version: z.string(),
+    cwd: z.string(),
+    gitBranch: z.string(),
+    userType: z.string(),
+    isSidechain: z.boolean(),
+    parentUuid: z.string().nullable(),
+    subtype: z.string(),
+    content: z.string(),
+    level: z.string(),
+    isMeta: z.boolean(),
 
-  // === Optional Fields ===
-  logicalParentUuid: z.string().optional(),
-  compactMetadata: CompactMetadataSchema.optional(),
-  toolUseID: z.string().optional(),
-}).strict();
+    // === Optional Fields ===
+    logicalParentUuid: z.string().optional(),
+    compactMetadata: CompactMetadataSchema.optional(),
+    toolUseID: z.string().optional(),
+  })
+  .strict()
 
-export type System = z.infer<typeof SystemSchema>;
+export type System = z.infer<typeof SystemSchema>
 
 // === SUMMARY ENTRIES ===
 
@@ -241,13 +249,15 @@ export type System = z.infer<typeof SystemSchema>;
  * - summary: Summary text content
  * - leafUuid: UUID of the last entry in the summarized conversation
  */
-export const SummarySchema = z.object({
-  type: z.literal('summary'),
-  summary: z.string(),
-  leafUuid: z.string(),
-}).strict();
+export const SummarySchema = z
+  .object({
+    type: z.literal('summary'),
+    summary: z.string(),
+    leafUuid: z.string(),
+  })
+  .strict()
 
-export type Summary = z.infer<typeof SummarySchema>;
+export type Summary = z.infer<typeof SummarySchema>
 
 // === UNKNOWN ENTRIES ===
 
@@ -260,13 +270,15 @@ export type Summary = z.infer<typeof SummarySchema>;
  * - timestamp: ISO 8601 timestamp
  * - test: Test data field
  */
-export const UnknownSchema = z.object({
-  action: z.string(),
-  timestamp: z.string(),
-  test: z.string(),
-}).strict();
+export const UnknownSchema = z
+  .object({
+    action: z.string(),
+    timestamp: z.string(),
+    test: z.string(),
+  })
+  .strict()
 
-export type Unknown = z.infer<typeof UnknownSchema>;
+export type Unknown = z.infer<typeof UnknownSchema>
 
 // === UNION TYPE ===
 
@@ -277,25 +289,16 @@ export type Unknown = z.infer<typeof UnknownSchema>;
  * Note: UnknownSchema is excluded from this union as it's only for debugging.
  * Unknown entries should be handled separately or will fail validation.
  */
-export const AnyEntrySchema = z.union([
-  UserSchema,
-  AssistantSchema,
-  SystemSchema,
-  SummarySchema,
-]);
+export const AnyEntrySchema = z.union([UserSchema, AssistantSchema, SystemSchema, SummarySchema])
 
-export type AnyEntry = z.infer<typeof AnyEntrySchema>;
+export type AnyEntry = z.infer<typeof AnyEntrySchema>
 
 // === TYPE GUARDS ===
 
-export const isUserEntry = (entry: AnyEntry): entry is User =>
-  entry.type === 'user';
+export const isUserEntry = (entry: AnyEntry): entry is User => entry.type === 'user'
 
-export const isAssistantEntry = (entry: AnyEntry): entry is Assistant =>
-  entry.type === 'assistant';
+export const isAssistantEntry = (entry: AnyEntry): entry is Assistant => entry.type === 'assistant'
 
-export const isSystemEntry = (entry: AnyEntry): entry is System =>
-  entry.type === 'system';
+export const isSystemEntry = (entry: AnyEntry): entry is System => entry.type === 'system'
 
-export const isSummaryEntry = (entry: AnyEntry): entry is Summary =>
-  entry.type === 'summary';
+export const isSummaryEntry = (entry: AnyEntry): entry is Summary => entry.type === 'summary'

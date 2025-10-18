@@ -7,7 +7,7 @@
  * Total files processed: 51
  */
 
-import { z } from 'zod';
+import { z } from 'zod'
 
 // === USER ENTRIES ===
 
@@ -21,24 +21,26 @@ import { z } from 'zod';
  * - cwd: Current working directory
  * - message: User message object with role and content
  */
-export const UserSchema = z.object({
-  // === Core Required Fields ===
-  type: z.literal('user'),
-  sessionId: z.string(),
-  timestamp: z.string().datetime(),
-  cwd: z.string(),
-  message: z.object({
-    role: z.literal('user'),
-    content: z.array(
-      z.object({
-        type: z.string(),
-        text: z.string().optional(),
-      })
-    ),
-  }),
-}).strict();
+export const UserSchema = z
+  .object({
+    // === Core Required Fields ===
+    type: z.literal('user'),
+    sessionId: z.string(),
+    timestamp: z.string().datetime(),
+    cwd: z.string(),
+    message: z.object({
+      role: z.literal('user'),
+      content: z.array(
+        z.object({
+          type: z.string(),
+          text: z.string().optional(),
+        })
+      ),
+    }),
+  })
+  .strict()
 
-export type User = z.infer<typeof UserSchema>;
+export type User = z.infer<typeof UserSchema>
 
 // === UNION TYPE ===
 
@@ -48,11 +50,10 @@ export type User = z.infer<typeof UserSchema>;
  *
  * Note: Currently only contains UserSchema as OpenCode only exports user entries.
  */
-export const AnyEntrySchema = UserSchema;
+export const AnyEntrySchema = UserSchema
 
-export type AnyEntry = z.infer<typeof AnyEntrySchema>;
+export type AnyEntry = z.infer<typeof AnyEntrySchema>
 
 // === TYPE GUARDS ===
 
-export const isUserEntry = (entry: AnyEntry): entry is User =>
-  entry.type === 'user';
+export const isUserEntry = (entry: AnyEntry): entry is User => entry.type === 'user'

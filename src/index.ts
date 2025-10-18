@@ -217,7 +217,16 @@ export interface GitHubWebhookTeam {
 
 // GitHub Pull Request Webhook types
 export interface GitHubPRWebhookPayload {
-  action: 'opened' | 'synchronize' | 'reopened' | 'closed' | 'edited' | 'assigned' | 'unassigned' | 'labeled' | 'unlabeled'
+  action:
+    | 'opened'
+    | 'synchronize'
+    | 'reopened'
+    | 'closed'
+    | 'edited'
+    | 'assigned'
+    | 'unassigned'
+    | 'labeled'
+    | 'unlabeled'
   number: number
   pull_request: {
     id: number
@@ -305,7 +314,16 @@ export interface GitHubTeamWebhookPayload {
 
 // GitHub Repository Webhook (repository lifecycle events)
 export interface GitHubRepositoryWebhookPayload {
-  action: 'created' | 'deleted' | 'archived' | 'unarchived' | 'edited' | 'renamed' | 'transferred' | 'publicized' | 'privatized'
+  action:
+    | 'created'
+    | 'deleted'
+    | 'archived'
+    | 'unarchived'
+    | 'edited'
+    | 'renamed'
+    | 'transferred'
+    | 'publicized'
+    | 'privatized'
   repository: GitHubWebhookRepository
   organization?: GitHubWebhookOrganization
   installation: GitHubWebhookInstallation

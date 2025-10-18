@@ -18,6 +18,11 @@ export type Subjects =
 	// Teams
 	| 'Team' // Teams
 	| 'Project' // Projects
+	// Subscriber features (subscription-based access)
+	| 'AdvancedAnalytics' // Advanced analytics features
+	| 'UnlimitedSessions' // Unlimited session storage
+	| 'GitHubIntegration' // GitHub integration access
+	| 'TeamMembership' // Ability to add team members
 
 // CASL Ability type placeholder (actual type defined in server with @casl/ability)
 export type AppAbility = any
@@ -32,8 +37,18 @@ export interface PermissionContext {
 		id: string
 	}
 	tenantUser?: {
-		role: 'owner' | 'admin' | 'member'
+		role: 'owner' | 'admin' | 'member' | 'support'
 		tenantId: string
 		userId: string
+	}
+	session?: {
+		subscription?: {
+			status: string
+			isActive: boolean
+			plan?: 'individual' | 'team' | 'enterprise'
+			paddleCustomerId?: string
+			paddleSubscriptionId?: string
+			billingCycle?: string
+		}
 	}
 }

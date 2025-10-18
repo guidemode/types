@@ -18,9 +18,19 @@ export interface AuthContext {
   user?: User
 }
 
+export interface SubscriptionInfo {
+  status: 'active' | 'canceled' | 'paused' | 'trialing' | 'past_due'
+  isActive: boolean // true if status === 'active' || status === 'trialing'
+  plan?: 'individual' | 'team' | 'enterprise'
+  paddleCustomerId?: string
+  paddleSubscriptionId?: string
+  billingCycle?: string
+}
+
 export interface SessionContext {
   tenantId: string
   userId?: string
   permissions: string[]
   user?: User
+  subscription?: SubscriptionInfo
 }

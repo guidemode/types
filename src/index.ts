@@ -33,7 +33,7 @@ export interface Tenant {
 export interface TenantUser {
   tenantId: string
   userId: string
-  role: 'owner' | 'admin' | 'member'
+  role: 'owner' | 'admin' | 'member' | 'support'
   joinedAt: string
 }
 
@@ -61,8 +61,9 @@ export interface TeamMember {
   name: string
   email: string
   avatarUrl?: string
-  role: 'owner' | 'admin' | 'member'
+  role: 'owner' | 'admin' | 'member' | 'support'
   joinedAt: string
+  firstSessionUploadedAt?: Date | null
   status: 'active' | 'pending'
 }
 
@@ -85,7 +86,7 @@ export interface TeamInvitation {
 
 export interface UpdateTeamMemberRoleRequest {
   userId: string
-  role: 'owner' | 'admin' | 'member'
+  role: 'owner' | 'admin' | 'member' | 'support'
 }
 
 // GitHub Teams and Sync types

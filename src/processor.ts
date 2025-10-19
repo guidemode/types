@@ -1,10 +1,11 @@
-import type { ParsedMessage, ParsedSession } from './session'
 import type { MetricType, SessionMetricsData } from './metrics'
+import type { ParsedMessage, ParsedSession } from './session'
 
 // Processor types
 export interface ProcessorResult {
   metricType: MetricType
   metrics: SessionMetricsData
+  // biome-ignore lint/suspicious/noExplicitAny: TODO: Define specific metadata schema
   metadata?: Record<string, any>
   processingTime?: number
 }
@@ -15,16 +16,8 @@ export interface ProcessorContext {
   userId: string
   provider: string
   // Optional git diff data from desktop app (not available in server context)
-  gitDiffData?: {
-    files: Array<{
-      path: string
-      stats: {
-        additions: number
-        deletions: number
-      }
-    }>
-    isUnstaged: boolean
-  }
+  // biome-ignore lint/suspicious/noExplicitAny: TODO: Extract to dedicated GitDiffData type
+  gitDiffData?: any
 }
 
 export type { ParsedMessage, ParsedSession }

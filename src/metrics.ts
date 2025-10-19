@@ -86,7 +86,7 @@ export interface QualityMetrics extends BaseMetrics {
 
 // Custom metrics for extensibility
 export interface CustomMetrics extends BaseMetrics {
-  [customKey: string]: any
+  // Inherits index signature from BaseMetrics
 }
 
 // Git diff metrics - desktop-only, all providers
@@ -144,6 +144,7 @@ export interface MetricMetadata {
     project_type?: string
     user_experience_level?: string
     session_type?: string
+    // biome-ignore lint/suspicious/noExplicitAny: Context can contain arbitrary metadata
     [key: string]: any
   }
 }

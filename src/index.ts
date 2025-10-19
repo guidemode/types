@@ -1,6 +1,5 @@
 // Re-export all types from sub-modules
 export * from './auth'
-export * from './env'
 export * from './session'
 export * from './processor'
 export * from './metrics'

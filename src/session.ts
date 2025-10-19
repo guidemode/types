@@ -74,7 +74,7 @@ export interface SessionDetailResponse {
   assessmentRating: 'thumbs_up' | 'meh' | 'thumbs_down' | null
   aiModelSummary: string | null
   aiModelQualityScore: number | null
-  aiModelMetadata: any | null
+  aiModelMetadata: unknown | null
   aiModelPhaseAnalysis: SessionPhaseAnalysis | null
   // Git tracking fields (session-specific)
   gitBranch: string | null
@@ -113,7 +113,7 @@ export interface SessionFilesResponse {
   processedAt: string | null
   aiModelSummary: string | null
   aiModelQualityScore: number | null
-  aiModelMetadata: any | null
+  aiModelMetadata: unknown | null
   aiModelPhaseAnalysis: SessionPhaseAnalysis | null
   username: string
   userAvatarUrl: string | null
@@ -149,7 +149,7 @@ export interface AgentSession {
   assessmentRating: 'thumbs_up' | 'meh' | 'thumbs_down' | null
   aiModelSummary: string | null
   aiModelQualityScore: number | null
-  aiModelMetadata: any | null
+  aiModelMetadata: unknown | null
   aiModelPhaseAnalysis: SessionPhaseAnalysis | null
   // Git tracking fields (session-specific)
   gitBranch: string | null
@@ -215,7 +215,9 @@ export interface ParsedMessage {
   id: string
   timestamp: Date
   type: MessageType
+  // biome-ignore lint/suspicious/noExplicitAny: TODO: Create proper content type union for different message types
   content: any
+  // biome-ignore lint/suspicious/noExplicitAny: TODO: Define specific metadata schema
   metadata?: Record<string, any>
   parentId?: string
   linkedTo?: string
@@ -228,6 +230,7 @@ export interface ParsedSession {
   startTime: Date
   endTime: Date
   duration: number
+  // biome-ignore lint/suspicious/noExplicitAny: TODO: Define specific metadata schema
   metadata?: Record<string, any>
 }
 
@@ -236,7 +239,9 @@ export interface BaseSessionMessage {
   id: string
   timestamp: string
   type: MessageType
+  // biome-ignore lint/suspicious/noExplicitAny: TODO: Create proper content type union for different message types
   content: any
+  // biome-ignore lint/suspicious/noExplicitAny: TODO: Define specific metadata schema
   metadata?: Record<string, any>
   parentId?: string
   linkedTo?: string
@@ -254,10 +259,13 @@ export interface ConversationTurn {
     timestamp: string
     toolUses?: Array<{
       name: string
+      // biome-ignore lint/suspicious/noExplicitAny: TODO: Create proper tool input type
       input: any
+      // biome-ignore lint/suspicious/noExplicitAny: TODO: Create proper tool result type
       result?: any
     }>
   }
+  // biome-ignore lint/suspicious/noExplicitAny: TODO: Define specific metadata schema
   metadata?: Record<string, any>
 }
 
@@ -269,7 +277,9 @@ export interface SessionParser {
 
 export interface ProviderAdapter {
   name: string
+  // biome-ignore lint/suspicious/noExplicitAny: Adapters handle multiple unknown message formats
   transform(rawMessage: any): BaseSessionMessage[]
+  // biome-ignore lint/suspicious/noExplicitAny: Detection works with various content formats
   detect(content: any): boolean
 }
 
@@ -285,7 +295,10 @@ export interface ClaudeMessage {
   type: 'user' | 'assistant'
   message: {
     role: string
-    content: string | Array<{ type: string; text?: string; tool_use_id?: string; content?: any }>
+    content:
+      | string
+      // biome-ignore lint/suspicious/noExplicitAny: TODO: Define proper Claude message content blocks
+      | Array<{ type: string; text?: string; tool_use_id?: string; content?: any }>
   }
   parentUuid?: string
   isMeta?: boolean
@@ -298,12 +311,14 @@ export interface ToolUseContent {
   type: 'tool_use'
   id: string
   name: string
+  // biome-ignore lint/suspicious/noExplicitAny: Tool inputs vary by tool type
   input: Record<string, any>
 }
 
 export interface ToolResultContent {
   type: 'tool_result'
   tool_use_id: string
+  // biome-ignore lint/suspicious/noExplicitAny: Tool results vary by tool type
   content: any
 }
 
@@ -339,7 +354,7 @@ export interface SessionUploadRequest {
   // Optional AI model fields
   aiModelSummary?: string
   aiModelQualityScore?: number
-  aiModelMetadata?: any
+  aiModelMetadata?: unknown
   aiModelPhaseAnalysis?: SessionPhaseAnalysis
 }
 
@@ -395,6 +410,7 @@ export interface SessionMetricUpload {
   improvementTips?: string[]
 
   // Custom metrics
+  // biome-ignore lint/suspicious/noExplicitAny: Custom metrics can contain any value type
   customMetrics?: Record<string, any>
 }
 

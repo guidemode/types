@@ -54,3 +54,26 @@ export interface DeleteUserRequest {
 export interface DeleteUserResponse {
   logout: boolean
 }
+
+// Queue message types
+export interface SessionProcessingMessage {
+  sessionId: string
+  tenantId: string
+  userId: string
+  provider: string
+  forceReprocess?: boolean
+  specificProcessor?: string
+  enableAIModels?: boolean
+  aiModelAdapter?: string
+}
+
+/**
+ * Message for billing quantity updates
+ */
+export interface BillingUpdateMessage {
+  type: 'user_activated' | 'user_deactivated'
+  tenantId: string
+  userId: string
+  username: string
+  timestamp: string
+}

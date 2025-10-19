@@ -48,11 +48,11 @@
     "build:cjs-package": "echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json",
     "dev": "tsc --watch",
     "clean": "rm -rf dist *.tsbuildinfo",
-    "test": "vitest run"
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write"
   },
   "devDependencies": {
-    "typescript": "^5.7.2",
-    "vitest": "^2.1.8"
+    "typescript": "^5.7.2"
   },
   "keywords": ["types", "typescript", "guideai"],
   "dependencies": {

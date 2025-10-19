@@ -25,6 +25,7 @@ export type Subjects =
   | 'TeamMembership' // Ability to add team members
 
 // CASL Ability type placeholder (actual type defined in server with @casl/ability)
+// biome-ignore lint/suspicious/noExplicitAny: Placeholder for @casl/ability type, defined in consuming package
 export type AppAbility = any
 
 // Context passed to ability builder

@@ -1,5 +1,21 @@
+import type { CopilotMetadata } from './providers/copilot/index.js'
+import type { GeminiMetadata } from './providers/gemini/index.js'
+import type { MessageContent } from './providers/shared/index.js'
+
 // Session and message types
 export type ProcessingStatus = 'pending' | 'processing' | 'completed' | 'failed'
+
+/**
+ * Provider-specific metadata
+ * Use discriminated union to enable type narrowing
+ */
+export type ProviderMetadata =
+  | { provider: 'claude-code'; metadata?: Record<string, unknown> }
+  | { provider: 'codex'; metadata?: Record<string, unknown> }
+  | { provider: 'opencode'; metadata?: Record<string, unknown> }
+  | { provider: 'gemini-code'; metadata?: GeminiMetadata }
+  | { provider: 'github-copilot'; metadata?: CopilotMetadata }
+  | { provider: string; metadata?: Record<string, unknown> } // Catch-all
 
 /**
  * Session Phase Types
@@ -52,6 +68,38 @@ export interface SessionsResponse {
   totalSessionsOtherUsers?: number // Count of sessions by other users (when userFilter is 'mine' and no results)
 }
 
+/**
+ * AI Model Metadata Types
+ * These represent the results from various AI analysis tasks
+ */
+
+export interface IntentExtractionResult {
+  primaryGoal?: string
+  secondaryGoals?: string[]
+  technologies?: string[] | Record<string, string>
+  challenges?: string[]
+  taskType?: string
+}
+
+export interface QualityAssessmentResult {
+  score?: number
+  improvements?: string[]
+  strengths?: string[]
+  reasoning?: string
+}
+
+export interface SessionSummaryResult {
+  summary?: string
+  keyPoints?: string[]
+}
+
+export interface AIModelMetadata {
+  'intent-extraction'?: IntentExtractionResult
+  'quality-assessment'?: QualityAssessmentResult
+  'session-summary'?: SessionSummaryResult
+  [key: string]: unknown // Allow additional analysis types
+}
+
 export interface SessionDetailResponse {
   id: string
   sessionId: string
@@ -74,7 +122,7 @@ export interface SessionDetailResponse {
   assessmentRating: 'thumbs_up' | 'meh' | 'thumbs_down' | null
   aiModelSummary: string | null
   aiModelQualityScore: number | null
-  aiModelMetadata: unknown | null
+  aiModelMetadata: AIModelMetadata | null
   aiModelPhaseAnalysis: SessionPhaseAnalysis | null
   // Git tracking fields (session-specific)
   gitBranch: string | null
@@ -113,7 +161,7 @@ export interface SessionFilesResponse {
   processedAt: string | null
   aiModelSummary: string | null
   aiModelQualityScore: number | null
-  aiModelMetadata: unknown | null
+  aiModelMetadata: AIModelMetadata | null
   aiModelPhaseAnalysis: SessionPhaseAnalysis | null
   username: string
   userAvatarUrl: string | null
@@ -149,7 +197,7 @@ export interface AgentSession {
   assessmentRating: 'thumbs_up' | 'meh' | 'thumbs_down' | null
   aiModelSummary: string | null
   aiModelQualityScore: number | null
-  aiModelMetadata: unknown | null
+  aiModelMetadata: AIModelMetadata | null
   aiModelPhaseAnalysis: SessionPhaseAnalysis | null
   // Git tracking fields (session-specific)
   gitBranch: string | null
@@ -215,10 +263,9 @@ export interface ParsedMessage {
   id: string
   timestamp: Date
   type: MessageType
-  // biome-ignore lint/suspicious/noExplicitAny: TODO: Create proper content type union for different message types
-  content: any
-  // biome-ignore lint/suspicious/noExplicitAny: TODO: Define specific metadata schema
-  metadata?: Record<string, any>
+  content: MessageContent
+  metadata?: Record<string, unknown>
+  providerMetadata?: ProviderMetadata // Provider-specific typed metadata
   parentId?: string
   linkedTo?: string
 }
@@ -271,7 +318,7 @@ export interface ConversationTurn {
 
 export interface SessionParser {
   name: string
-  parse(content: string, provider?: string): BaseSessionMessage[]
+  parse(content: string, provider: string): BaseSessionMessage[]
   canParse(content: string): boolean
 }
 
@@ -279,8 +326,6 @@ export interface ProviderAdapter {
   name: string
   // biome-ignore lint/suspicious/noExplicitAny: Adapters handle multiple unknown message formats
   transform(rawMessage: any): BaseSessionMessage[]
-  // biome-ignore lint/suspicious/noExplicitAny: Detection works with various content formats
-  detect(content: any): boolean
 }
 
 export interface SessionViewerProps {
@@ -305,26 +350,6 @@ export interface ClaudeMessage {
   sessionId: string
   userType?: string
   requestId?: string
-}
-
-export interface ToolUseContent {
-  type: 'tool_use'
-  id: string
-  name: string
-  // biome-ignore lint/suspicious/noExplicitAny: Tool inputs vary by tool type
-  input: Record<string, any>
-}
-
-export interface ToolResultContent {
-  type: 'tool_result'
-  tool_use_id: string
-  // biome-ignore lint/suspicious/noExplicitAny: Tool results vary by tool type
-  content: any
-}
-
-export interface TextContent {
-  type: 'text'
-  text: string
 }
 
 // Session upload types for desktop -> server sync

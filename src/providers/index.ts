@@ -23,5 +23,7 @@
 export * as Claude from './claude'
 export * as Codex from './codex'
 export * as OpenCode from './opencode'
+export * as Gemini from './gemini'
+export * as Copilot from './copilot'
 // export * as Cursor from './cursor';
 // export * as Windsurf from './windsurf';

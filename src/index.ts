@@ -5,9 +5,74 @@ export * from './processor'
 export * from './metrics'
 export * from './settings'
 export * from './permissions'
+export * from './git'
+
+// Shared content block types (used across all providers)
+export type {
+  ContentBlock,
+  MessageContent,
+  StructuredMessageContent,
+  TextContent,
+  ToolUseContent,
+  ToolResultContent,
+  ThinkingContent,
+  ImageContent,
+  SystemReminderContent,
+  UnknownContent,
+} from './providers/shared/index.js'
+
+export {
+  isTextContent,
+  isToolUseContent,
+  isToolResultContent,
+  isThinkingContent,
+  isImageContent,
+  isSystemReminderContent,
+  isStructuredMessageContent,
+  extractContentBlocks,
+  getTextFromContent,
+  hasToolUses,
+  hasToolResults,
+} from './providers/shared/index.js'
 
 // Provider-specific schemas (Zod)
 export * as Providers from './providers'
+
+// Gemini provider types
+export type {
+  GeminiMessage,
+  Thought,
+  TokenMetrics,
+  GeminiMetadata,
+} from './providers/gemini/index.js'
+export {
+  GeminiMessageSchema,
+  isGeminiMessage,
+  hasGeminiThoughts,
+  hasGeminiTokens,
+  calculateCacheHitRate,
+  calculateThinkingOverhead,
+} from './providers/gemini/index.js'
+
+// GitHub Copilot provider types
+export type {
+  TimelineEntry,
+  TimelineEntryType,
+  ToolCallResult,
+  CopilotSession,
+  CopilotMetadata,
+} from './providers/copilot/index.js'
+export {
+  TimelineEntrySchema,
+  CopilotSessionSchema,
+  isTimelineEntry,
+  isUserEntry,
+  isCopilotEntry,
+  isToolCallEntry,
+  isToolResultEntry,
+  isInfoEntry,
+  pairToolCallWithResult,
+} from './providers/copilot/index.js'
 
 // Domain model types
 export interface User {

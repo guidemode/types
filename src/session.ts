@@ -254,6 +254,7 @@ export type MessageType =
   | 'command'
   | 'command_output'
   | 'interruption'
+  | 'compact' // Context compaction event
   | 'user_input'
   | 'assistant_response'
   | 'tool_use'

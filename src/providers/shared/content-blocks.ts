@@ -24,6 +24,25 @@ export interface ToolUseContent {
 }
 
 /**
+ * TodoWrite tool input structure
+ * Used by: Claude Code, OpenCode for task tracking
+ */
+export interface TodoWriteInput {
+  todos: Array<{
+    content: string // Description of the todo item
+    status: 'pending' | 'in_progress' | 'completed' // Current state
+    activeForm: string // Present-tense version (e.g., "Creating..." vs "Create...")
+  }>
+}
+
+/**
+ * Type guard to check if a ToolUseContent is a TodoWrite call
+ */
+export function isTodoWriteTool(tool: ToolUseContent): tool is ToolUseContent & { input: TodoWriteInput } {
+  return tool.name === 'TodoWrite' && 'todos' in tool.input && Array.isArray(tool.input.todos)
+}
+
+/**
  * Tool/function execution result content block
  * Used by: Claude, Codex (as function_call_output), Gemini, OpenCode, Copilot
  */

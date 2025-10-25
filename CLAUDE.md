@@ -255,6 +255,52 @@ function UserProfile({ user }: { user: UserResponse }) {
 
 ## Development Workflow
 
+**IMPORTANT: Always run quality checks locally before committing changes.**
+
+### Pre-Commit Checklist
+
+Run these commands in the **types package directory** (`packages/types/`) before committing:
+
+```bash
+# 1. Building (REQUIRED - must succeed)
+# Builds both ESM and CJS distributions
+pnpm build
+
+# 2. Testing (REQUIRED when tests exist)
+# Runs type tests with Vitest
+pnpm test
+
+# Note: No separate typecheck script (TypeScript checks run during build)
+# Note: No lint script yet - types package has minimal code to lint
+```
+
+### Quick Quality Check
+
+Run all checks in sequence:
+
+```bash
+# From packages/types/
+pnpm build && pnpm test
+```
+
+**If any check fails, your code MUST NOT be committed. Fix all errors before proceeding.**
+
+### Code Quality Standards
+
+- **Zero tolerance**: No build errors or test failures allowed in commits
+- **Type safety**: All types must be well-defined and documented
+- **Dual builds**: Both ESM and CJS must build successfully
+- **Breaking changes**: Coordinate with consuming packages when making breaking changes
+
+### From Workspace Root
+
+To check the types package from the workspace root:
+
+```bash
+pnpm --filter @guideai-dev/types build
+pnpm --filter @guideai-dev/types test
+```
+
 ### Adding New Types
 
 1. **Define**: Add type definitions in appropriate category

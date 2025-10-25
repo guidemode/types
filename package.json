@@ -48,7 +48,8 @@
     "build:cjs-package": "echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json",
     "dev": "tsc --watch",
     "clean": "rm -rf dist *.tsbuildinfo",
-    "lint": "biome check .",
+    "lint": "biome check . --diagnostic-level=error",
+    "lint:all": "biome check .",
     "lint:fix": "biome check . --write"
   },
   "devDependencies": {

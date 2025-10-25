@@ -38,7 +38,9 @@ export interface TodoWriteInput {
 /**
  * Type guard to check if a ToolUseContent is a TodoWrite call
  */
-export function isTodoWriteTool(tool: ToolUseContent): tool is ToolUseContent & { input: TodoWriteInput } {
+export function isTodoWriteTool(
+  tool: ToolUseContent
+): tool is ToolUseContent & { input: TodoWriteInput } {
   return tool.name === 'TodoWrite' && 'todos' in tool.input && Array.isArray(tool.input.todos)
 }
 

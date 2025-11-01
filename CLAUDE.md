@@ -11,19 +11,91 @@ Centralized TypeScript type definitions shared across all GuideAI packages, prov
 
 ### Structure
 
+**Organized by semantic domain for clarity and maintainability:**
+
 ```
 src/
-├── index.ts             # Main exports
-├── providers/           # Provider-specific Zod schemas (NEW)
+├── index.ts             # Main re-exports (no type definitions)
+│
+├── domain/              # Core domain models
+│   ├── users.ts         # User, TenantUser, TeamMember, invitations
+│   ├── tenants.ts       # Tenant, TenantSettings, CRUD requests
+│   └── api-keys.ts      # ApiKey, create/revoke operations
+│
+├── sessions/            # Session-related types
+│   ├── core.ts          # AgentSession, SessionFile, ProcessingStatus, SessionPhase
+│   ├── messages.ts      # ParsedMessage, ParsedSession, MessageType, ConversationTurn
+│   ├── responses.ts     # SessionDetailResponse, SessionsResponse, SessionFilters
+│   ├── upload.ts        # SessionUploadRequest, SessionMetricUpload
+│   └── ai-analysis.ts   # IntentExtraction, QualityAssessment, SessionSummary
+│
+├── metrics/             # Metrics by type
+│   ├── types.ts         # MetricType, BaseMetrics, SessionMetricsData
+│   ├── performance.ts   # PerformanceMetrics
+│   ├── usage.ts         # UsageMetrics
+│   ├── quality.ts       # QualityMetrics
+│   ├── engagement.ts    # EngagementMetrics
+│   ├── errors.ts        # ErrorMetrics
+│   ├── assessment.ts    # AssessmentMetrics, AssessmentSession
+│   ├── context.ts       # ContextManagementMetrics (Claude Code)
+│   ├── git-diff.ts      # GitDiffMetrics (desktop)
+│   └── utilities.ts     # Helper functions (extractToolUses, etc.)
+│
+├── github/              # GitHub integration
+│   ├── app.ts           # GitHubAppInstallation, GitHubRepository
+│   ├── webhooks.ts      # Webhook payload types (PR, Team, Member, etc.)
+│   ├── teams.ts         # Team, TeamMemberAssignment
+│   └── sync.ts          # GitHubSyncLog, PRSessionLink
+│
+├── queue/               # Queue message types
+│   └── messages.ts      # SessionProcessingMessage, BillingUpdateMessage
+│
+├── providers/           # Provider-specific Zod schemas
 │   ├── index.ts         # Provider namespace exports
-│   └── claude/          # Claude Code JSONL schemas
-│       ├── index.ts     # Claude provider exports
-│       └── entries.ts   # Generated Zod schemas
-├── api/                 # API request/response types
-├── database/            # Database schema types
-├── auth/                # Authentication types
-└── ui/                  # UI component types
+│   ├── shared/          # Shared content block types
+│   ├── claude/          # Claude Code JSONL schemas
+│   ├── codex/           # Codex schemas
+│   ├── opencode/        # OpenCode schemas
+│   ├── gemini/          # Gemini Code schemas
+│   └── copilot/         # GitHub Copilot schemas
+│
+├── auth.ts              # Authentication context types
+├── permissions.ts       # RBAC permission types
+├── git.ts               # Git diff and repository types
+├── processor.ts         # Session processor types
+│
+└── Legacy re-export files (for backward compatibility):
+    ├── session.ts       # Re-exports from sessions/
+    ├── metrics.ts       # Re-exports from metrics/
+    └── settings.ts      # Re-exports from domain/ and github/
 ```
+
+### Organization Principles
+
+**Semantic Grouping:**
+- Types are organized by **domain** rather than by technical concern
+- Each directory represents a logical grouping of related functionality
+- Clear file naming makes it easy to find the right types
+
+**Benefits:**
+- **Clarity**: Easy to locate types by their purpose (e.g., all session types in `sessions/`)
+- **Maintainability**: Related types live together, reducing cognitive load
+- **Scalability**: New types have clear homes based on their domain
+- **Discoverability**: File structure mirrors the application architecture
+
+**Backward Compatibility:**
+- All existing imports continue to work via legacy re-export files
+- No breaking changes for consuming packages
+- Gradual migration path if needed
+
+**Finding Types:**
+- **Domain models** (User, Tenant, ApiKey) → `domain/`
+- **Session data** (AgentSession, ParsedMessage) → `sessions/`
+- **Metrics** (PerformanceMetrics, AssessmentMetrics) → `metrics/`
+- **GitHub integration** (webhooks, teams, sync) → `github/`
+- **Queue messages** → `queue/`
+- **Authentication** → `auth.ts`
+- **Permissions (RBAC)** → `permissions.ts`
 
 ## Build System
 

@@ -1,14 +1,9 @@
+import type { User } from './domain/users.js'
+
 // Auth context types
-export interface User {
-  id: string
-  githubId: number | null
-  username: string
-  email: string
-  name: string
-  avatarUrl: string | null
-  isGlobalAdmin?: boolean
-  firstSessionUploadedAt?: Date | null
-}
+
+// Re-export User for backward compatibility
+export type { User }
 
 export interface AuthContext {
   tenantId: string

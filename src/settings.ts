@@ -1,79 +1,18 @@
-// Settings types
-export interface TenantSettings {
-  id: string
-  tenantId: string
-  tenantName: string
-  autoCleanupEnabled: boolean
-  autoCleanupDays: number
-  dataRetentionDays: number
-  notificationsEnabled: boolean
-  updatedAt: Date
-  updatedBy: string
-}
+// Settings types - moved to domain/tenants.ts and github/app.ts
 
-export interface TenantSettingsUpdate {
-  tenantName?: string
-  autoCleanupEnabled?: boolean
-  autoCleanupDays?: number
-  dataRetentionDays?: number
-  notificationsEnabled?: boolean
-}
+// Re-export for backward compatibility
+export type {
+  TenantSettings,
+  TenantSettingsUpdate,
+  CreateTenantRequest,
+  DeleteTenantRequest,
+  CreateTenantResponse,
+  DeleteTenantResponse,
+} from './domain/tenants.js'
 
-export interface CreateTenantRequest {
-  name: string
-}
+export type { GitHubManageInfo, GitHubAppNameResponse } from './github/app.js'
 
-export interface DeleteTenantRequest {
-  slug: string
-  confirm: string
-}
+export type { DeleteUserRequest, DeleteUserResponse } from './domain/users.js'
 
-export interface CreateTenantResponse {
-  logout?: boolean
-}
-
-export interface DeleteTenantResponse {
-  logout?: boolean
-}
-
-export interface GitHubManageInfo {
-  manageUrl: string
-  installationId: number
-  accountLogin: string
-}
-
-export interface GitHubAppNameResponse {
-  appName: string
-}
-
-export interface DeleteUserRequest {
-  email: string
-  confirm: string
-}
-
-export interface DeleteUserResponse {
-  logout: boolean
-}
-
-// Queue message types
-export interface SessionProcessingMessage {
-  sessionId: string
-  tenantId: string
-  userId: string
-  provider: string
-  forceReprocess?: boolean
-  specificProcessor?: string
-  enableAIModels?: boolean
-  aiModelAdapter?: string
-}
-
-/**
- * Message for billing quantity updates
- */
-export interface BillingUpdateMessage {
-  type: 'user_activated' | 'user_deactivated'
-  tenantId: string
-  userId: string
-  username: string
-  timestamp: string
-}
+// Queue message types moved to queue/messages.ts
+export type { SessionProcessingMessage, BillingUpdateMessage } from './queue/messages.js'

@@ -1,0 +1,91 @@
+// User and team member types
+
+/**
+ * User entity - represents a GuideAI user
+ * Merges user definitions from auth and domain contexts
+ */
+export interface User {
+  id: string
+  githubId: number | null
+  username: string
+  email: string
+  name: string
+  avatarUrl: string | null
+  isGlobalAdmin?: boolean
+  firstSessionUploadedAt?: Date | null
+  createdAt?: string
+  updatedAt?: string
+}
+
+/**
+ * Tenant user association - links users to tenants with roles
+ */
+export interface TenantUser {
+  tenantId: string
+  userId: string
+  role: 'owner' | 'admin' | 'member' | 'support'
+  joinedAt: string
+}
+
+/**
+ * Team member with user details - denormalized view for team management
+ */
+export interface TeamMember {
+  id: string
+  tenantId: string
+  userId: string
+  username: string
+  name: string
+  email: string
+  avatarUrl?: string
+  role: 'owner' | 'admin' | 'member' | 'support'
+  joinedAt: string
+  firstSessionUploadedAt?: Date | null
+  status: 'active' | 'pending'
+}
+
+/**
+ * Team invitation request
+ */
+export interface InviteTeamMemberRequest {
+  email: string
+  role: 'admin' | 'member'
+}
+
+/**
+ * Team invitation entity
+ */
+export interface TeamInvitation {
+  id: string
+  tenantId: string
+  email: string
+  role: 'admin' | 'member'
+  invitedBy: string
+  invitedAt: string
+  expiresAt: string
+  acceptedAt?: string
+  status: 'pending' | 'accepted' | 'expired'
+}
+
+/**
+ * Update team member role request
+ */
+export interface UpdateTeamMemberRoleRequest {
+  userId: string
+  role: 'owner' | 'admin' | 'member' | 'support'
+}
+
+/**
+ * User deletion request
+ */
+export interface DeleteUserRequest {
+  email: string
+  confirm: string
+}
+
+/**
+ * User deletion response
+ */
+export interface DeleteUserResponse {
+  logout: boolean
+}

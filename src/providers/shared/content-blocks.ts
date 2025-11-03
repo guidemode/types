@@ -114,6 +114,7 @@ export type ContentBlock =
  * Used by parsers to provide easy access to different content types
  */
 export interface StructuredMessageContent {
+  type: 'structured'
   text?: string
   toolUses: ToolUseContent[]
   toolResults: ToolResultContent[]
@@ -166,6 +167,8 @@ export function isStructuredMessageContent(
     typeof content === 'object' &&
     content !== null &&
     !Array.isArray(content) &&
+    'type' in content &&
+    content.type === 'structured' &&
     'structured' in content
   )
 }

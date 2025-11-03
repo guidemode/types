@@ -212,6 +212,59 @@ const entry2 = Providers.Claude.AnyEntrySchema.parse(jsonData);
 **Schema Generation:**
 See `provider-docs/SCHEMA_GENERATION.md` for how to generate schemas from JSONL files.
 
+#### Canonical Format Types
+
+**Universal message format for all AI providers.**
+
+**Location:** `src/sessions/messages.ts`
+
+The canonical format types define the universal JSONL structure that all providers convert to in the Rust desktop app. These types are used throughout the session processing pipeline.
+
+**Core Types:**
+```typescript
+interface CanonicalMessage {
+    uuid: string
+    timestamp: string
+    message_type: 'user' | 'assistant' | 'meta'
+    session_id: string
+    provider: string
+    cwd?: string
+    git_branch?: string
+    version?: string
+    message: MessageContent
+    provider_metadata?: any
+}
+
+interface MessageContent {
+    role: string
+    content: string | ContentBlock[]
+    model?: string
+    usage?: TokenUsage
+}
+
+type ContentBlock =
+    | TextBlock
+    | ToolUseBlock
+    | ToolResultBlock
+    | ThinkingBlock
+```
+
+**Content Block Types:**
+- `TextBlock` - `{ type: 'text', text: string }`
+- `ToolUseBlock` - `{ type: 'tool_use', id, name, input }`
+- `ToolResultBlock` - `{ type: 'tool_result', tool_use_id, content, is_error? }`
+- `ThinkingBlock` - `{ type: 'thinking', thinking: string }`
+
+**Benefits:**
+- Single format for all providers (Claude, Gemini, Copilot, Codex, OpenCode)
+- Provider-specific features preserved in `provider_metadata`
+- Type-safe parsing and processing
+- Enables unified session analytics
+
+**Related:**
+- Rust implementation: `apps/desktop/src-tauri/src/providers/canonical/mod.rs`
+- Parser: `packages/session-processing/src/parsers/canonical/parser.ts`
+
 ### API Types
 ```typescript
 // Request/response shapes

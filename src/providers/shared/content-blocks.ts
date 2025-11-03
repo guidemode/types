@@ -112,13 +112,16 @@ export type ContentBlock =
 /**
  * Structured message content with parsed components
  * Used by parsers to provide easy access to different content types
+ *
+ * NOTE: In canonical format, each message has SINGLE-TYPE content only.
+ * Messages never mix text + tools in a single JSONL line.
+ * Exactly ONE of text/toolUse/toolResult will be set.
  */
 export interface StructuredMessageContent {
   type: 'structured'
-  text?: string
-  toolUses: ToolUseContent[]
-  toolResults: ToolResultContent[]
-  structured: ContentBlock[]
+  text?: string // Text content (if message type is text)
+  toolUse?: ToolUseContent // Tool use (if message type is tool_use)
+  toolResult?: ToolResultContent // Tool result (if message type is tool_result)
 }
 
 /**
@@ -168,8 +171,7 @@ export function isStructuredMessageContent(
     content !== null &&
     !Array.isArray(content) &&
     'type' in content &&
-    content.type === 'structured' &&
-    'structured' in content
+    content.type === 'structured'
   )
 }
 
@@ -184,7 +186,17 @@ export function extractContentBlocks<T extends ContentBlock>(
     return []
   }
   if (isStructuredMessageContent(content)) {
-    return content.structured.filter(predicate)
+    // Check each field - exactly one will be set
+    if (content.text && predicate({ type: 'text', text: content.text } as ContentBlock)) {
+      return [{ type: 'text', text: content.text } as T]
+    }
+    if (content.toolUse && predicate(content.toolUse as ContentBlock)) {
+      return [content.toolUse as T]
+    }
+    if (content.toolResult && predicate(content.toolResult as ContentBlock)) {
+      return [content.toolResult as T]
+    }
+    return []
   }
   return content.filter(predicate)
 }
@@ -213,7 +225,7 @@ export function getTextFromContent(content: MessageContent): string {
 export function hasToolUses(content: MessageContent): boolean {
   if (typeof content === 'string') return false
   if (isStructuredMessageContent(content)) {
-    return content.toolUses.length > 0
+    return content.toolUse !== undefined
   }
   return content.some(isToolUseContent)
 }
@@ -224,7 +236,7 @@ export function hasToolUses(content: MessageContent): boolean {
 export function hasToolResults(content: MessageContent): boolean {
   if (typeof content === 'string') return false
   if (isStructuredMessageContent(content)) {
-    return content.toolResults.length > 0
+    return content.toolResult !== undefined
   }
   return content.some(isToolResultContent)
 }

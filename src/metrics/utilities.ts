@@ -71,16 +71,8 @@ export function extractTextFromMessage(message: ParsedMessage): string {
 
   // StructuredMessageContent
   const structured = message.content
-  const texts: string[] = []
-  if (structured.text) {
-    texts.push(structured.text)
-  }
-  if (structured.structured) {
-    texts.push(
-      ...structured.structured.filter(isTextContent).map((block: TextContent) => block.text)
-    )
-  }
-  return texts.join('\n')
+  // Structured content will have text field set if it's a text message
+  return structured.text || ''
 }
 
 /**
@@ -229,8 +221,8 @@ export function messageHasToolUses(message: ParsedMessage): boolean {
   if (Array.isArray(message.content)) {
     return message.content.some(isToolUseContent)
   }
-  // StructuredMessageContent
-  return message.content.toolUses.length > 0 || message.content.structured.some(isToolUseContent)
+  // StructuredMessageContent - check toolUse field
+  return message.content.toolUse !== undefined
 }
 
 /**
@@ -241,10 +233,8 @@ export function messageHasToolResults(message: ParsedMessage): boolean {
   if (Array.isArray(message.content)) {
     return message.content.some(isToolResultContent)
   }
-  // StructuredMessageContent
-  return (
-    message.content.toolResults.length > 0 || message.content.structured.some(isToolResultContent)
-  )
+  // StructuredMessageContent - check toolResult field
+  return message.content.toolResult !== undefined
 }
 
 /**
@@ -255,6 +245,7 @@ export function messageHasThinking(message: ParsedMessage): boolean {
   if (Array.isArray(message.content)) {
     return message.content.some(isThinkingContent)
   }
-  // StructuredMessageContent
-  return message.content.structured.some(isThinkingContent)
+  // StructuredMessageContent - thinking would not be in our simplified structure
+  // (text/toolUse/toolResult only)
+  return false
 }

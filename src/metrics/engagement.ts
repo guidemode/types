@@ -5,9 +5,9 @@ import type { BaseMetrics } from './types.js'
  */
 export interface EngagementMetrics extends BaseMetrics {
   interruption_rate: number
+  total_interruptions: number
   session_length_minutes: number
   metadata?: {
-    total_interruptions: number
     total_responses: number
     improvement_tips: string[]
     // Extra fields for detailed analysis

@@ -11,6 +11,7 @@ export interface UsageMetrics extends BaseMetrics {
     write_operations: number
     total_user_messages: number
     total_lines_read?: number // For git diff efficiency ratios
+    ratio_quality?: 'excellent' | 'acceptable' | 'poor' // Lower ratio is better
     improvement_tips: string[]
     // Extra fields for detailed analysis
     tool_diversity?: number

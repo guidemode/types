@@ -1,5 +1,5 @@
-import type { MetricType, SessionMetricsData } from './metrics'
-import type { ParsedMessage, ParsedSession } from './session'
+import type { MetricType, SessionMetricsData } from './metrics.js'
+import type { ParsedMessage, ParsedSession } from './session.js'
 
 // Processor types
 export interface ProcessorResult {

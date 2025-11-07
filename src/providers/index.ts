@@ -20,10 +20,10 @@
  */
 
 // Export provider namespaces as they are added
-export * as Claude from './claude'
-export * as Codex from './codex'
-export * as OpenCode from './opencode'
-export * as Gemini from './gemini'
-export * as Copilot from './copilot'
-// export * as Cursor from './cursor';
-// export * as Windsurf from './windsurf';
+export * as Claude from './claude/index.js'
+export * as Codex from './codex/index.js'
+export * as OpenCode from './opencode/index.js'
+export * as Gemini from './gemini/index.js'
+export * as Copilot from './copilot/index.js'
+// export * as Cursor from './cursor/index.js';
+// export * as Windsurf from './windsurf/index.js';

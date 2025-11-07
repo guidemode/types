@@ -39,6 +39,9 @@ export * from './permissions.js'
 export * from './git.js'
 export * from './processor.js'
 
+// Canonical validation (Zod schemas and validation functions)
+export * from './canonical-validation.js'
+
 // Shared content block types (used across all providers)
 export type {
   ContentBlock,
@@ -68,7 +71,7 @@ export {
 } from './providers/shared/index.js'
 
 // Provider-specific schemas (Zod)
-export * as Providers from './providers'
+export * as Providers from './providers/index.js'
 
 // Gemini provider types
 export type {

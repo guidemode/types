@@ -6,14 +6,48 @@ import type { BaseMetrics } from './types.js'
  * Assessment metrics for user feedback
  */
 export interface AssessmentMetrics extends BaseMetrics {
-  responses: Record<string, AssessmentAnswer>
   completed_at: string
   duration_seconds?: number
-  survey_type?: 'short' | 'standard' | 'full'
+  survey_type?: 'short' | 'standard' | 'full' | 'quick'
+
+  // Usefulness category
+  task_helpfulness?: number
+  effort_impact?: string
+  speed_comparison?: string
+
+  // Trust category
+  verification_frequency?: number
+  deployment_confidence?: number
+  error_detectability?: string
+
+  // Cognitive category
+  cognitive_load?: number
+  mental_alignment?: number
+  user_control?: number
+
+  // Learning category
+  learning_outcome?: string
+  understanding_depth?: string
+  growth_impact?: string
+
+  // Satisfaction category
+  nps_score?: number
+  task_enjoyment?: string
+  stuck_frequency?: string
+
+  // Comparison category
+  ai_perception?: string
+  pair_programming_comparison?: number
+  future_preference?: string
+
+  // Reflection category
+  best_contribution?: string
+  worst_experience?: string
+  improvement_suggestion?: string
 }
 
 /**
- * Assessment answer types
+ * Assessment answer types (used for API request/response)
  */
 export type AssessmentAnswer =
   | { type: 'likert'; value: number }
@@ -24,12 +58,12 @@ export type AssessmentAnswer =
 /**
  * Assessment status
  */
-export type AssessmentStatus = 'not_started' | 'in_progress' | 'completed'
+export type AssessmentStatus = 'not_started' | 'rating_only' | 'in_progress' | 'completed'
 
 /**
  * Assessment question types
  */
-export type AssessmentQuestionType = 'likert-5' | 'likert-7' | 'text' | 'choice'
+export type AssessmentQuestionType = 'likert-5' | 'likert-7' | 'nps' | 'text' | 'choice'
 
 /**
  * Assessment category classification
@@ -69,6 +103,7 @@ export interface AssessmentQuestionConfig {
   choices?: string[] // For choice questions
   placeholder?: string // For text questions
   helpText?: string
+  reverseScored?: boolean // For Likert scales: true if low scores are positive (e.g., "Never" = good)
 }
 
 /**
@@ -91,14 +126,69 @@ export interface AssessmentResponse {
 }
 
 /**
- * Assessment session data
+ * Assessment session data (stored in database)
  */
 export interface AssessmentSession {
+  id: string
   sessionId: string
-  status: AssessmentStatus
+  tenantId: string
+  userId: string
+  provider: string
+
+  // Metadata
+  surveyType?: 'short' | 'standard' | 'full' | 'quick'
+  durationSeconds?: number
+  rating?: 'thumbs_up' | 'meh' | 'thumbs_down'
+
+  // Usefulness category
+  taskHelpfulness?: number
+  effortImpact?: string
+  speedComparison?: string
+
+  // Trust category
+  verificationFrequency?: number
+  deploymentConfidence?: number
+  errorDetectability?: string
+
+  // Cognitive category
+  cognitiveLoad?: number
+  mentalAlignment?: number
+  userControl?: number
+
+  // Learning category
+  learningOutcome?: string
+  understandingDepth?: string
+  growthImpact?: string
+
+  // Satisfaction category
+  npsScore?: number
+  taskEnjoyment?: string
+  stuckFrequency?: string
+
+  // Comparison category
+  aiPerception?: string
+  pairProgrammingComparison?: number
+  futurePreference?: string
+
+  // Reflection category
+  bestContribution?: string
+  worstExperience?: string
+  improvementSuggestion?: string
+
+  // Timestamps
+  completedAt: string
+  createdAt: string
+}
+
+/**
+ * Assessment session API response format
+ * Includes status and responses array for backward compatibility
+ */
+export interface Assessment {
+  sessionId: string
+  status?: AssessmentStatus
   responses: AssessmentResponse[]
-  startedAt?: string
   completedAt?: string
-  rating?: 'thumbs_up' | 'meh' | 'thumbs_down' | null
-  surveyType?: 'quick' | 'standard'
+  surveyType?: 'quick' | 'standard' | 'short' | 'full'
+  rating?: 'thumbs_up' | 'meh' | 'thumbs_down'
 }

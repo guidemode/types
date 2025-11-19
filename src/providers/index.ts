@@ -7,7 +7,7 @@
  *
  * @example
  * ```typescript
- * import { Claude } from '@guideai-dev/types/providers';
+ * import { Claude } from '@guidemode/types/providers';
  *
  * // Parse JSONL entry
  * const entry = Claude.AnyEntrySchema.parse(jsonData);

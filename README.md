@@ -1,19 +1,19 @@
-# @guideai-dev/types
+# @guidemode/types
 
-> **Shared TypeScript types for the GuideAI ecosystem.**
+> **Shared TypeScript types for the GuideMode ecosystem.**
 
-Type definitions used across all GuideAI packages for type safety and consistency.
+Type definitions used across all GuideMode packages for type safety and consistency.
 
 ## Installation
 
 ```bash
-npm install @guideai-dev/types
+npm install @guidemode/types
 ```
 
 ## Usage
 
 ```typescript
-import type { AgentSession, SessionMetrics } from '@guideai-dev/types'
+import type { AgentSession, SessionMetrics } from '@guidemode/types'
 
 const session: AgentSession = {
   sessionId: 'session-123',
@@ -44,7 +44,7 @@ const session: AgentSession = {
 ### Build from Source
 
 ```bash
-git clone https://github.com/guideai-dev/types.git
+git clone https://github.com/guidemode-dev/types.git
 cd types
 pnpm install
 pnpm build
@@ -57,9 +57,9 @@ pnpm build
 
 ## Related Packages
 
-- [@guideai-dev/desktop](https://github.com/guideai-dev/desktop) - Desktop app
-- [@guideai-dev/session-processing](https://github.com/guideai-dev/session-processing) - Analytics engine
-- [@guideai-dev/cli](https://github.com/guideai-dev/cli) - CLI tool
+- [@guidemode/desktop](https://github.com/guidemode-dev/desktop) - Desktop app
+- [@guidemode/session-processing](https://github.com/guidemode-dev/session-processing) - Analytics engine
+- [@guidemode/cli](https://github.com/guidemode-dev/cli) - CLI tool
 
 ## License
 
@@ -67,6 +67,6 @@ MIT License - see [LICENSE](LICENSE)
 
 ## Support
 
-- 💬 [**Discussions**](https://github.com/orgs/guideai-dev/discussions) - Ask questions, share ideas
-- 🐛 [**Issues**](https://github.com/guideai-dev/desktop/issues) - Report bugs, request features
-- 📧 **Email**: support@guideai.dev
+- 💬 [**Discussions**](https://github.com/orgs/guidemode-dev/discussions) - Ask questions, share ideas
+- 🐛 [**Issues**](https://github.com/guidemode-dev/desktop/issues) - Report bugs, request features
+- 📧 **Email**: support@guidemode.dev

@@ -5,7 +5,7 @@
  *
  * @example
  * ```typescript
- * import { UserSchema, AnyEntrySchema, isUserEntry } from '@guideai-dev/types/providers/claude';
+ * import { UserSchema, AnyEntrySchema, isUserEntry } from '@guidemode/types/providers/claude';
  *
  * // Parse and validate an entry
  * const entry = AnyEntrySchema.parse(jsonData);

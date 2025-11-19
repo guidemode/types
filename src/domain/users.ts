@@ -1,7 +1,7 @@
 // User and team member types
 
 /**
- * User entity - represents a GuideAI user
+ * User entity - represents a GuideMode user
  * Merges user definitions from auth and domain contexts
  */
 export interface User {
@@ -88,4 +88,39 @@ export interface DeleteUserRequest {
  */
 export interface DeleteUserResponse {
   logout: boolean
+}
+
+/**
+ * User settings - personal preferences and configuration
+ * Generic structure matching tenant_settings for future extensibility
+ */
+export interface UserSettings {
+  id: string
+  userId: string
+  emailSurveyAssignments: boolean
+  emailSurveyReminders: boolean
+  createdAt: Date
+  updatedAt: Date
+}
+
+/**
+ * User settings update request
+ */
+export interface UserSettingsUpdate {
+  emailSurveyAssignments?: boolean
+  emailSurveyReminders?: boolean
+}
+
+/**
+ * Get user settings response
+ */
+export interface GetUserSettingsResponse {
+  settings: UserSettings
+}
+
+/**
+ * Update user settings response
+ */
+export interface UpdateUserSettingsResponse {
+  settings: UserSettings
 }

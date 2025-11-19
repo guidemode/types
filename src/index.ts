@@ -38,6 +38,7 @@ export * from './auth.js'
 export * from './permissions.js'
 export * from './git.js'
 export * from './processor.js'
+export * from './surveys.js'
 
 // Canonical validation (Zod schemas and validation functions)
 export * from './canonical-validation.js'

@@ -1,7 +1,7 @@
 // Tenant and tenant settings types
 
 /**
- * Tenant entity - represents an organization in GuideAI
+ * Tenant entity - represents an organization in GuideMode
  */
 export interface Tenant {
   id: string
@@ -22,6 +22,9 @@ export interface TenantSettings {
   autoCleanupDays: number
   dataRetentionDays: number
   notificationsEnabled: boolean
+  surveyMinimumIntervalDays: number
+  surveyMaxActivePerUser: number
+  timezone: string // IANA timezone (e.g., "America/New_York", "UTC")
   updatedAt: Date
   updatedBy: string
 }
@@ -35,6 +38,9 @@ export interface TenantSettingsUpdate {
   autoCleanupDays?: number
   dataRetentionDays?: number
   notificationsEnabled?: boolean
+  surveyMinimumIntervalDays?: number
+  surveyMaxActivePerUser?: number
+  timezone?: string
 }
 
 /**
@@ -42,6 +48,7 @@ export interface TenantSettingsUpdate {
  */
 export interface CreateTenantRequest {
   name: string
+  timezone?: string // Optional timezone from browser detection
 }
 
 /**

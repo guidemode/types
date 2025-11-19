@@ -4,7 +4,6 @@
  */
 
 import { z } from 'zod'
-import type { ContentBlock } from '../shared/index.js'
 
 /**
  * Gemini thought structure (extended thinking)

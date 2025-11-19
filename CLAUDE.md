@@ -1,6 +1,6 @@
 # Types - Shared TypeScript Definitions
 
-Centralized TypeScript type definitions shared across all GuideAI packages, providing type safety for API contracts, database schemas, and UI components.
+Centralized TypeScript type definitions shared across all GuideMode packages, providing type safety for API contracts, database schemas, and UI components.
 
 ## Architecture
 
@@ -174,8 +174,8 @@ The `providers/` namespace contains auto-generated Zod schemas for different AI 
 #### Claude Code Provider
 
 ```typescript
-import { Providers } from '@guideai-dev/types';
-import { AnyEntrySchema, isUserEntry } from '@guideai-dev/types/providers/claude';
+import { Providers } from '@guidemode/types';
+import { AnyEntrySchema, isUserEntry } from '@guidemode/types/providers/claude';
 
 // Parse JSONL entry with runtime validation
 const entry = AnyEntrySchema.parse(JSON.parse(jsonLine));
@@ -344,7 +344,7 @@ type ValidationResult<T> = {
 import type {
   UserResponse,
   CreateUserRequest
-} from '@guideai/types'
+} from '@guidemode/types'
 
 app.post('/users', async (c) => {
   const body: CreateUserRequest = await c.req.json()
@@ -359,7 +359,7 @@ app.post('/users', async (c) => {
 import type {
   AuthSession,
   UserResponse
-} from '@guideai/types'
+} from '@guidemode/types'
 
 async function whoAmI(): Promise<UserResponse> {
   // Type-safe API consumption
@@ -371,7 +371,7 @@ async function whoAmI(): Promise<UserResponse> {
 import type {
   UserResponse,
   ValidationResult
-} from '@guideai/types'
+} from '@guidemode/types'
 
 function UserProfile({ user }: { user: UserResponse }) {
   // Type-safe component props
@@ -422,8 +422,8 @@ pnpm build && pnpm test
 To check the types package from the workspace root:
 
 ```bash
-pnpm --filter @guideai-dev/types build
-pnpm --filter @guideai-dev/types test
+pnpm --filter @guidemode/types build
+pnpm --filter @guidemode/types test
 ```
 
 ### Adding New Types
@@ -485,4 +485,4 @@ describe('UserResponse', () => {
 - **Type Evolution**: Additive changes preferred over breaking changes
 - **Migration**: Clear migration paths for type updates
 
-This package ensures type safety and consistency across the entire GuideAI ecosystem while maintaining flexibility for future growth.
+This package ensures type safety and consistency across the entire GuideMode ecosystem while maintaining flexibility for future growth.

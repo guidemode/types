@@ -1,13 +1,7 @@
 // Metric Calculation Helper Utilities
 // Type-safe helper functions for extracting and analyzing content from sessions
 
-import type {
-  ContentBlock,
-  TextContent,
-  ThinkingContent,
-  ToolResultContent,
-  ToolUseContent,
-} from '../providers/shared/index.js'
+import type { TextContent, ToolResultContent, ToolUseContent } from '../providers/shared/index.js'
 import {
   isTextContent,
   isThinkingContent,

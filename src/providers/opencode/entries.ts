@@ -8,7 +8,6 @@
  */
 
 import { z } from 'zod'
-import type { ContentBlock } from '../shared/index.js'
 
 // === USER ENTRIES ===
 

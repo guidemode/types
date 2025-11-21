@@ -30,6 +30,9 @@ export * from './github/webhooks.js'
 export * from './github/teams.js'
 export * from './github/sync.js'
 
+// Work tracking types (issues, PRs, deployments)
+export * from './work-tracking/index.js'
+
 // Queue message types
 export * from './queue/messages.js'
 

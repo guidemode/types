@@ -5,6 +5,7 @@
 
 export * from './repositories.js'
 export * from './issues.js'
+export * from './issue-links.js'
 export * from './pull-requests.js'
 export * from './deployments.js'
 export * from './config.js'

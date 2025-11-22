@@ -39,6 +39,9 @@ export const questionConfigSchema = z.object({
   questions: z.array(questionConfigItemSchema),
 })
 
+// Survey Purpose
+export type SurveyPurpose = 'discovery' | 'delivery' | 'whole_team' | 'happiness' | 'ai_effectiveness'
+
 // Survey Schedule
 export interface SurveySchedule {
   id: string
@@ -46,6 +49,7 @@ export interface SurveySchedule {
   name: string
   description?: string | null
   surveyType: string
+  purpose?: SurveyPurpose | null
   scheduleType: ScheduleType
   dayOfWeek?: number | null // 0=Sunday, 6=Saturday (for weekly schedules)
   dayOfMonth?: number | null // 1-31 business day (for monthly schedules)
@@ -68,6 +72,7 @@ const surveyScheduleBaseSchema = z.object({
   name: z.string().min(1).max(255),
   description: z.string().optional(),
   surveyType: z.string().default('team_experience'),
+  purpose: z.enum(['discovery', 'delivery', 'whole_team', 'happiness', 'ai_effectiveness']).optional(),
   scheduleType: z.enum(['weekly', 'monthly', 'triggered']),
   dayOfWeek: z.number().int().min(0).max(6).optional(), // 0=Sunday, 6=Saturday
   dayOfMonth: z.number().int().min(1).max(31).optional(), // Business day 1-31
@@ -196,7 +201,7 @@ export const surveyResponseSchema = z.object({
 })
 
 // Question Types
-export type QuestionType = 'likert-7' | 'likert-5' | 'nps' | 'text' | 'choice'
+export type QuestionType = 'likert-7' | 'likert-5' | 'nps' | 'text' | 'choice' | 'number' | 'boolean'
 export type QuestionCategory =
   | 'productivity'
   | 'satisfaction'
@@ -205,6 +210,14 @@ export type QuestionCategory =
   | 'learning'
   | 'wellbeing'
   | 'feedback'
+  | 'discovery_satisfaction'
+  | 'discovery_activity'
+  | 'discovery_collaboration'
+  | 'discovery_efficiency'
+  | 'delivery_performance'
+  | 'delivery_efficiency'
+  | 'delivery_collaboration'
+  | 'delivery_activity'
 
 export interface SurveyQuestion {
   id: string
@@ -212,12 +225,14 @@ export interface SurveyQuestion {
   type: QuestionType
   category: QuestionCategory
   required: boolean
-  labels?: [string, string] // [min, max] for scales
+  labels?: [string, string] // [min, max] for scales / [no, yes] for boolean
   choices?: string[]
   placeholder?: string
   helpText?: string
   reverseScored?: boolean
   skipLabel?: string // Optional custom label for skip button (e.g., "Skip this question")
+  min?: number // For number type
+  max?: number // For number type
   // Optional fields for compatibility with AssessmentQuestionConfig
   importance?: 'low' | 'medium' | 'high'
   version?: string[]

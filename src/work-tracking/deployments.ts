@@ -98,7 +98,7 @@ export interface DeploymentUpdate {
 /**
  * Deployment status record
  */
-export interface DeploymentStatus {
+export interface DeploymentStatusRecord {
   id: string
   deploymentId: string
   externalId: string | null

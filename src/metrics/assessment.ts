@@ -53,6 +53,8 @@ export type AssessmentAnswer =
   | { type: 'likert'; value: number }
   | { type: 'text'; value: string }
   | { type: 'choice'; value: string }
+  | { type: 'number'; value: number }
+  | { type: 'boolean'; value: boolean }
   | { type: 'skipped' }
 
 /**

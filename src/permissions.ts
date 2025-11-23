@@ -46,7 +46,7 @@ export interface PermissionContext {
     subscription?: {
       status: string
       isActive: boolean
-      plan?: 'individual' | 'team' | 'enterprise'
+      plan?: 'individual' | 'smallTeam' | 'largeTeam' | 'enterprise'
       paddleCustomerId?: string
       paddleSubscriptionId?: string
       billingCycle?: string

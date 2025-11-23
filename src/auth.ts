@@ -16,7 +16,7 @@ export interface AuthContext {
 export interface SubscriptionInfo {
   status: 'active' | 'canceled' | 'paused' | 'trialing' | 'past_due'
   isActive: boolean // true if status === 'active' || status === 'trialing'
-  plan?: 'individual' | 'team' | 'enterprise'
+  plan?: 'individual' | 'smallTeam' | 'largeTeam' | 'enterprise'
   paddleCustomerId?: string
   paddleSubscriptionId?: string
   billingCycle?: string

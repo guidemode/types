@@ -13,12 +13,7 @@ export type PullRequestState = 'open' | 'closed' | 'merged' | 'draft'
 /**
  * Review state
  */
-export type ReviewState =
-  | 'pending'
-  | 'commented'
-  | 'approved'
-  | 'changes_requested'
-  | 'dismissed'
+export type ReviewState = 'pending' | 'commented' | 'approved' | 'changes_requested' | 'dismissed'
 
 /**
  * Pull request record from database

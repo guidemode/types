@@ -24,6 +24,8 @@ export type Subjects =
   | 'GitHubIntegration' // GitHub integration access
   | 'TeamMembership' // Ability to add team members
 
+import type { SubscriptionInfo } from './auth.js'
+
 // CASL Ability type placeholder (actual type defined in server with @casl/ability)
 // biome-ignore lint/suspicious/noExplicitAny: Placeholder for @casl/ability type, defined in consuming package
 export type AppAbility = any
@@ -43,13 +45,6 @@ export interface PermissionContext {
     userId: string
   }
   session?: {
-    subscription?: {
-      status: string
-      isActive: boolean
-      plan?: 'individual' | 'smallTeam' | 'largeTeam' | 'enterprise'
-      paddleCustomerId?: string
-      paddleSubscriptionId?: string
-      billingCycle?: string
-    }
+    subscription?: SubscriptionInfo
   }
 }

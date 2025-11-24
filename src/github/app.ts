@@ -76,3 +76,40 @@ export interface GitHubCommit {
   }
   html_url: string
 }
+
+/**
+ * GitHub user information
+ */
+export interface GitHubUser {
+  login: string
+  avatarUrl: string
+  id: number
+}
+
+/**
+ * GitHub organization with installation status
+ */
+export interface GitHubOrganization {
+  login: string
+  name: string
+  avatarUrl: string
+  role: 'admin' | 'member'
+  hasAppInstalled: boolean
+  installationId: number | null
+}
+
+/**
+ * Response from /api/settings/github/user-organizations endpoint
+ */
+export interface GitHubUserOrganizationsResponse {
+  connected: boolean
+  githubUser?: GitHubUser
+  personalAccount?: {
+    login: string
+    avatarUrl: string
+    hasAppInstalled: boolean
+    installationId: number | null
+  }
+  organizations?: GitHubOrganization[]
+  error?: string
+}

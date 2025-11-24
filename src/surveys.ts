@@ -40,7 +40,12 @@ export const questionConfigSchema = z.object({
 })
 
 // Survey Purpose
-export type SurveyPurpose = 'discovery' | 'delivery' | 'whole_team' | 'happiness' | 'ai_effectiveness'
+export type SurveyPurpose =
+  | 'discovery'
+  | 'delivery'
+  | 'whole_team'
+  | 'happiness'
+  | 'ai_effectiveness'
 
 // Survey Schedule
 export interface SurveySchedule {
@@ -72,7 +77,9 @@ const surveyScheduleBaseSchema = z.object({
   name: z.string().min(1).max(255),
   description: z.string().optional(),
   surveyType: z.string().default('team_experience'),
-  purpose: z.enum(['discovery', 'delivery', 'whole_team', 'happiness', 'ai_effectiveness']).optional(),
+  purpose: z
+    .enum(['discovery', 'delivery', 'whole_team', 'happiness', 'ai_effectiveness'])
+    .optional(),
   scheduleType: z.enum(['weekly', 'monthly', 'triggered']),
   dayOfWeek: z.number().int().min(0).max(6).optional(), // 0=Sunday, 6=Saturday
   dayOfMonth: z.number().int().min(1).max(31).optional(), // Business day 1-31
@@ -201,7 +208,14 @@ export const surveyResponseSchema = z.object({
 })
 
 // Question Types
-export type QuestionType = 'likert-7' | 'likert-5' | 'nps' | 'text' | 'choice' | 'number' | 'boolean'
+export type QuestionType =
+  | 'likert-7'
+  | 'likert-5'
+  | 'nps'
+  | 'text'
+  | 'choice'
+  | 'number'
+  | 'boolean'
 export type QuestionCategory =
   | 'productivity'
   | 'satisfaction'

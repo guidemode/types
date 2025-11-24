@@ -204,6 +204,7 @@ export interface JiraWebhookConfig {
  */
 export interface JiraWebhookSettingsResponse {
   isConnected: boolean // OAuth connection status
+  hasAdminScopes: boolean // Whether user has manage:jira-webhook scope
   webhooks: JiraWebhookConfig[]
   accessibleResources: Array<{
     id: string // cloudId

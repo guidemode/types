@@ -28,4 +28,12 @@ export interface SessionContext {
   permissions: string[]
   user?: User
   subscription?: SubscriptionInfo
+  tenantUser?: {
+    role: 'owner' | 'admin' | 'member'
+    tenantId: string
+    userId: string
+  }
+  tenant?: {
+    id: string
+  }
 }

@@ -7,10 +7,7 @@
  * Jira webhook event types
  * https://developer.atlassian.com/cloud/jira/platform/webhooks/
  */
-export type JiraWebhookEvent =
-  | 'jira:issue_created'
-  | 'jira:issue_updated'
-  | 'jira:issue_deleted'
+export type JiraWebhookEvent = 'jira:issue_created' | 'jira:issue_updated' | 'jira:issue_deleted'
 
 /**
  * Jira webhook registration request
@@ -103,6 +100,47 @@ export interface JiraIssuePriority {
 }
 
 /**
+ * Jira issue link type definition
+ * Defines the relationship type between linked issues
+ */
+export interface JiraIssueLinkType {
+  id: string
+  name: string // 'Blocks', 'Relates', 'Duplicate', etc.
+  inward: string // 'is blocked by', 'relates to', etc.
+  outward: string // 'blocks', 'relates to', etc.
+}
+
+/**
+ * Jira issue link
+ * Represents a link between two issues
+ */
+export interface JiraIssueLink {
+  id: string
+  type: JiraIssueLinkType
+  // One of these will be present depending on link direction
+  inwardIssue?: {
+    id: string
+    key: string
+    self: string
+    fields?: {
+      summary?: string
+      status?: JiraIssueStatus
+      issuetype?: JiraIssueType
+    }
+  }
+  outwardIssue?: {
+    id: string
+    key: string
+    self: string
+    fields?: {
+      summary?: string
+      status?: JiraIssueStatus
+      issuetype?: JiraIssueType
+    }
+  }
+}
+
+/**
  * Jira issue fields
  */
 export interface JiraIssueFields {
@@ -119,6 +157,10 @@ export interface JiraIssueFields {
   comment?: {
     total: number
   }
+  // Issue links (for discovery validation and blocking relationships)
+  issuelinks?: JiraIssueLink[]
+  // Resolution date (when issue was resolved/closed)
+  resolutiondate?: string | null // ISO 8601 timestamp
   // Agile fields (if available)
   customfield_10016?: number // Story points (field ID varies by instance)
   customfield_10020?: Array<{
@@ -219,6 +261,7 @@ export interface JiraWebhookSettingsResponse {
  */
 export interface JiraWebhookCreateRequest {
   cloudId: string // Jira cloud ID
+  siteUrl: string // Jira site URL (e.g., "https://guidemode.atlassian.net")
   events: JiraWebhookEvent[] // Events to subscribe to
   jqlFilter?: string // Optional JQL filter
 }

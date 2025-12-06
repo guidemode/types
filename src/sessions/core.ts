@@ -57,8 +57,8 @@ export interface SessionPhase {
 export interface AgentSession {
   id: string
   provider: string
-  projectName: string
-  projectId: string | null // Foreign key to projects table (desktop only)
+  repositoryName: string
+  repositoryId: string | null // Foreign key to repositories table (desktop only)
   sessionId: string
   fileName: string | null
   filePath: string | null // Path to session file (R2 path for server, local path for desktop)

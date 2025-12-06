@@ -10,7 +10,7 @@ export interface SessionDetailResponse {
   id: string
   sessionId: string
   provider: string
-  projectName: string
+  repositoryName: string
   sessionStartTime: string | null
   sessionEndTime: string | null
   durationMs: number | null
@@ -36,7 +36,7 @@ export interface SessionDetailResponse {
   latestCommitHash: string | null
   username: string
   userAvatarUrl: string | null
-  project: {
+  repository: {
     id: string
     name: string
     gitRemoteUrl: string | null
@@ -75,7 +75,7 @@ export interface SessionsResponse {
 export interface SessionFilesResponse {
   sessionId: string
   provider: string
-  projectName: string
+  repositoryName: string
   sessionStartTime: string | null
   sessionEndTime: string | null
   durationMs: number | null
@@ -87,7 +87,7 @@ export interface SessionFilesResponse {
   aiModelPhaseAnalysis: SessionPhaseAnalysis | null
   username: string
   userAvatarUrl: string | null
-  project?: {
+  repository?: {
     id: string
     name: string
     gitRemoteUrl: string | null
@@ -102,7 +102,7 @@ export interface SessionFilesResponse {
  */
 export interface SessionFilters {
   provider?: string
-  projectId?: string
+  repositoryId?: string
   userFilter?: 'everyone' | 'mine'
   sortOrder?: 'newest' | 'oldest' | 'name-asc' | 'name-desc' | 'size-asc' | 'size-desc'
   dateFilter?: 'all' | 'last24hrs' | 'today' | 'yesterday' | 'this-week' | 'last-week' | 'range'

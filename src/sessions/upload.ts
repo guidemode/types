@@ -8,7 +8,7 @@ import type { ProcessingStatus } from './core.js'
  */
 export interface SessionUploadRequest {
   provider: string
-  projectName: string
+  repositoryName: string
   sessionId: string
   fileName: string
   filePath: string

@@ -17,7 +17,7 @@ export type Subjects =
   | 'Analytics' // Analytics data
   // Teams
   | 'Team' // Teams
-  | 'Project' // Projects
+  | 'Repository' // Repositories
   // Subscriber features (subscription-based access)
   | 'AdvancedAnalytics' // Advanced analytics features
   | 'UnlimitedSessions' // Unlimited session storage

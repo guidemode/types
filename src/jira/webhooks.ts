@@ -251,6 +251,11 @@ export interface JiraConnectedSite {
   siteUrl: string // Site URL (e.g., "https://acmecorp.atlassian.net")
   isActive: boolean // Whether the installation is active (syncing enabled)
   createdAt: Date // When the site was connected
+  // The custom field this site uses for "Team". Null until a sync has looked.
+  teamFieldId: string | null
+  teamFieldName: string | null
+  // True when an operator pinned the field; false when a sync discovered it.
+  teamFieldOverride: boolean
 }
 
 /**

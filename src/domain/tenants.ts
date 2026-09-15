@@ -26,6 +26,8 @@ export interface TenantSettings {
   surveyMinimumIntervalDays: number
   surveyMaxActivePerUser: number
   timezone: string // IANA timezone (e.g., "America/New_York", "UTC")
+  /** Link PRs to Jira issues from a bare issue key in a branch name or title. */
+  jiraKeyLinkingEnabled: boolean
   aivaRoleDisplayOverrides?: AIVARoleDisplayOverrides | null
   updatedAt: Date
   updatedBy: string
@@ -43,6 +45,7 @@ export interface TenantSettingsUpdate {
   surveyMinimumIntervalDays?: number
   surveyMaxActivePerUser?: number
   timezone?: string
+  jiraKeyLinkingEnabled?: boolean
   aivaRoleDisplayOverrides?: AIVARoleDisplayOverrides | null
 }
 

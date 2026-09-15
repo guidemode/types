@@ -28,6 +28,8 @@ export interface TenantSettings {
   timezone: string // IANA timezone (e.g., "America/New_York", "UTC")
   /** Link PRs to Jira issues from a bare issue key in a branch name or title. */
   jiraKeyLinkingEnabled: boolean
+  /** Start change scoring automatically when a GitHub sync completes. */
+  changeScoringAfterSync: boolean
   aivaRoleDisplayOverrides?: AIVARoleDisplayOverrides | null
   updatedAt: Date
   updatedBy: string
@@ -46,6 +48,7 @@ export interface TenantSettingsUpdate {
   surveyMaxActivePerUser?: number
   timezone?: string
   jiraKeyLinkingEnabled?: boolean
+  changeScoringAfterSync?: boolean
   aivaRoleDisplayOverrides?: AIVARoleDisplayOverrides | null
 }
 

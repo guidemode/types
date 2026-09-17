@@ -905,6 +905,26 @@ export interface AIVAInterviewSurveyComparison {
   summary: string
 }
 
+/**
+ * Deterministic checks run over the model's output for one transcript.
+ *
+ * The model is asked to quote the transcript and to use only the display name; neither
+ * instruction is enforceable by asking. These are what was actually found, recorded so a
+ * reviewer can see it without re-reading the transcript.
+ */
+export interface AIVAInterviewQualityFlags {
+  /** Names the model said it identified, kept for review rather than used. */
+  identifiedInterviewer: string | null
+  identifiedInterviewee: string | null
+  /** Quotes checked against the transcript. `ungrounded` is capped at 10 entries. */
+  quotes: { total: number; grounded: number; ungrounded: string[] }
+  /** Real names found in output that the prompt asked to be replaced. */
+  nameLeaks: string[]
+  /** Rows dropped because they failed schema or referenced something unprescribed. */
+  stripped: { questionSummaries: number; dimensionInsights: number }
+  checkedAt: string
+}
+
 export type AIVAInterviewProcessingStatus = 'pending' | 'processing' | 'completed' | 'failed'
 
 /**
@@ -927,6 +947,7 @@ export interface AIVAInterviewTranscript {
   questionSummaries: AIVAInterviewQuestionSummary[] | null
   dimensionInsights: Record<string, AIVAInterviewDimensionInsight> | null
   surveyComparison: AIVAInterviewSurveyComparison[] | null
+  qualityFlags: AIVAInterviewQualityFlags | null
   createdAt: string
   updatedAt: string
   participantName?: string

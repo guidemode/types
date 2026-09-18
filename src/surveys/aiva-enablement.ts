@@ -1,7 +1,8 @@
 /**
  * AIVA Enablement Framework
  *
- * Defines the 6-pillar × 23-work-stream enablement model for AI across the SDLC.
+ * Defines the 6-pillar × 4-work-stream enablement model for AI across the SDLC
+ * (24 work streams; count them from AIVA_ENABLEMENT_WORK_STREAM_KEYS, never by hand).
  * This is a framework-locked design — pillars and work streams are not user-editable.
  *
  * Two distinct AI modes in development:
@@ -38,7 +39,7 @@ export type AIVAEnablementActionStatus = 'todo' | 'in_progress' | 'done' | 'bloc
 export type AIVAEnablementActionEffort = 'low' | 'medium' | 'high'
 
 // =============================================================================
-// WORK STREAM KEYS (23 total)
+// WORK STREAM KEYS (6 pillars x 4)
 // =============================================================================
 
 export type AIVAEnablementWorkStream =
@@ -663,6 +664,10 @@ export interface AIVAEnablementProgram {
   description: string
   status: AIVAEnablementStatus
   gapSeverity: AIVAEnablementGapSeverity
+  /** Whether `gapSeverity` is the score rule's answer or a bounded model adjustment. */
+  severitySource: 'score' | 'ai-adjusted'
+  /** What the score rule alone derived, so a reader can see both. */
+  scoreGapSeverity: AIVAEnablementGapSeverity | null
   priority: AIVAEnablementPriority
   horizon: AIVAEnablementHorizon
   timingOverride: 'now' | 'next' | 'later' | null
@@ -743,4 +748,13 @@ export interface AIVAEnablementAnalysisResult {
   workStreams: AIVAEnablementAnalysisItem[]
   generatedAt: string
   model: string
+  /**
+   * What the completeness check found. A work stream the model skipped gets no AI
+   * analysis at all, which the page used to render as an empty space.
+   */
+  qualityFlags: {
+    missingStreams: string[]
+    duplicateStreams: number
+    stripped: number
+  }
 }

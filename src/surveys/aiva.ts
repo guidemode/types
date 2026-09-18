@@ -60,7 +60,7 @@ export type AIVASurveyVariant = 'full' | 'light'
 /**
  * Confidence levels based on evidence quality and source count
  */
-export type AIVAConfidence = 'low' | 'medium' | 'high'
+export type AIVAConfidence = 'low' | 'medium' | 'high' | 'calibrated'
 
 /**
  * Value Stream phases
@@ -700,8 +700,10 @@ export interface AIVARoadmap {
     byEffort: Record<AIVARecommendationEffort, number>
   }
   executiveSummary?: string
-  source?: 'ai' | 'template'
+  source?: 'ai' | 'template' | 'mixed'
   generatedAt?: string
+  /** What the deterministic checks found; absent on a roadmap generated before them. */
+  qualityFlags?: AIVARoadmapQualityFlags | null
 }
 
 /**
@@ -713,9 +715,62 @@ export interface AIVAGeneratedRoadmap {
   primaryBottleneck: AIVAValueStreamPhase | null
   generatedAt: string
   model: string
-  source: 'ai' | 'template'
+  /** `mixed` when validation dropped enough that the template engine filled a horizon. */
+  source: 'ai' | 'template' | 'mixed'
   priorityAnalysis?: AIVAPriorityAnalysis
   interviewTranscriptCount?: number
+  qualityFlags?: AIVARoadmapQualityFlags
+}
+
+// =============================================================================
+// QUALITY FLAGS
+// =============================================================================
+
+/**
+ * What the deterministic checks found in what the feedback models returned.
+ *
+ * Absent on a row finalised before the checks existed, which is why every consumer
+ * treats `undefined` as "not checked" rather than as "nothing found".
+ */
+export interface AIVAFeedbackQualityFlags {
+  areas: {
+    /** Rows dropped for their shape, or for naming a dimension that had no feedback. */
+    stripped: number
+    /** Rows whose sentiment was not one of the four and was written as `neutral`. */
+    coerced: number
+    /** Dimensions that had feedback and got no summary. */
+    missingDimensions: string[]
+  }
+  checkedAt: string
+}
+
+/** What the checks found in the priority analysis and the roadmap. */
+export interface AIVARoadmapQualityFlags {
+  priorityAnalysis: {
+    status: 'ok' | 'empty' | 'failed' | 'skipped'
+    reason?: string
+    stripped: number
+    unsupportedSources: Array<{ area: string; source: string }>
+  }
+  roadmap: {
+    stripped: number
+    misquoted: Array<{
+      title: string
+      entity: string
+      claimedScore: number
+      actualScore: number | null
+    }>
+    unreferenced: string[]
+    unsupportedSources: Array<{ area: string; source: string }>
+    droppedDependencies: number
+    retryUsed: boolean
+    /** The judge call failed, so no score claim could be checked either way. */
+    claimsUnverified: boolean
+    /** Horizons the template engine had to fill because too little survived. */
+    filledFromTemplate: string[]
+  }
+  interviewWeighting: 'none' | 'illustrative' | 'corroborating' | 'decisive'
+  checkedAt: string
 }
 
 // =============================================================================
@@ -747,6 +802,15 @@ export interface AIVAAggregatedDiscrepancy {
   avgSurveyScore: number
   dominantSentiment: 'positive' | 'mixed' | 'negative'
   summary: string
+  /**
+   * The assessment's own score for this dimension, which is what a reader compares the
+   * interviews against. `avgSurveyScore` is only the interviewees' own survey answers.
+   */
+  assessmentScore: number | null
+  /** Insights whose sentiment was neutral, so no direction could be compared. */
+  neutralCount: number
+  /** Insights whose evidence was weak, so a comparison would have rested on little. */
+  weakCount: number
 }
 
 /**
@@ -757,6 +821,11 @@ export interface AggregatedInterviewEvidence {
   dimensionInsights: AIVAAggregatedDimensionInsight[]
   discrepancies: AIVAAggregatedDiscrepancy[]
   keyThemes: string[]
+  /**
+   * Scored dimensions no interview question in the batch's question set reaches.
+   * Silence about one of these is a property of the questions asked, not of the answers.
+   */
+  uncoveredDimensions: string[]
 }
 
 /**
@@ -987,7 +1056,10 @@ export interface AIVAFeedbackSummaries {
     transcriptCount: number
     dimensionInsights: AIVAInterviewDimensionInsight[]
     keyThemes: string[]
+    /** Scored dimensions the batch's interview questions do not reach. */
+    uncoveredDimensions?: string[]
   }
+  qualityFlags?: AIVAFeedbackQualityFlags
 }
 
 // =============================================================================

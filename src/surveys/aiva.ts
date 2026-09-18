@@ -63,6 +63,47 @@ export type AIVASurveyVariant = 'full' | 'light'
 export type AIVAConfidence = 'low' | 'medium' | 'high' | 'calibrated'
 
 /**
+ * What a finalised assessment row IS, rather than what it contains.
+ *
+ * A finalisation is expensive and its output is what a client reads, so a run can be
+ * made as a `draft` that somebody with `manage AIVA` reads before anybody else can.
+ * `final` is the one readers see. `superseded` is a former `final` that a later draft
+ * replaced: kept for the trail, hidden from every reader.
+ *
+ * There is at most one `final` and at most one `draft` per (tenant, batch), enforced by
+ * two partial unique indexes — which is also what makes the save idempotent.
+ */
+export type AIVAAssessmentStatus = 'draft' | 'final' | 'superseded'
+
+export const AIVA_ASSESSMENT_STATUSES = ['draft', 'final', 'superseded'] as const
+
+/**
+ * What each model step actually sent, recorded on a DRAFT run only.
+ *
+ * The preview (phase 4a) renders what a run *would* send; this is what it did send,
+ * which is the only thing that can be compared against an output somebody disputes.
+ * Drafts only, because a published run's prompts are reproducible from the preview and
+ * the column would otherwise grow on every client assessment forever.
+ */
+export interface AIVAFinalisationPromptLogEntry {
+  system: string
+  user: string
+  model: string
+  /** ISO timestamp of the send, when the step recorded one. */
+  sentAt?: string
+  /**
+   * How many times the step sent a prompt before it was happy. Only the LAST prompt is
+   * kept: for the roadmap that is the retry, which carries the corrections appended.
+   */
+  attempts?: number
+}
+
+export interface AIVAFinalisationPromptLog {
+  /** Keyed by the workflow step id, which is also its memoisation key. */
+  steps: Record<string, AIVAFinalisationPromptLogEntry>
+}
+
+/**
  * Value Stream phases
  */
 export type AIVAValueStreamPhase = 'discovery' | 'delivery' | 'validation' | 'foundations'
@@ -568,6 +609,12 @@ export interface AIVAAssessment {
   tenantId: string
   scheduleId: string
   batchId: string | null
+  /** Draft, final or superseded. Absent on rows written before the status existed. */
+  status?: AIVAAssessmentStatus
+  publishedAt?: Date | string | null
+  publishedBy?: string | null
+  /** Why the run that wrote this row died, when one did. Survives a reload. */
+  failureReason?: string | null
   calibratedBy: string | null
   calibratedAt: Date | null
   participantCount: number

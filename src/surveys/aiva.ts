@@ -834,6 +834,15 @@ export interface AggregatedInterviewEvidence {
    * Silence about one of these is a property of the questions asked, not of the answers.
    */
   uncoveredDimensions: string[]
+  /**
+   * What interviewees raised under a question that maps to no dimension — the catch-all.
+   *
+   * Nothing read those answers before: stage 2 is told to return mapped dimensions only,
+   * so the one question most likely to carry the thing nobody thought to ask about
+   * reached neither a prompt nor the report. Capped at 10, in transcript order. Absent on
+   * evidence aggregated before this existed.
+   */
+  generalObservations: string[]
 }
 
 /**
@@ -949,6 +958,15 @@ export interface AIVAInterviewQuestionSummary {
   keyPoints: string[]
   relevantQuotes: string[]
   dimensions: string[]
+  /**
+   * What the interviewee sounded like on THIS question, decided by the stage that read
+   * the transcript. `null` means the question was not covered, so there is nothing to
+   * read. Rows written before this existed carry no field at all, which is what
+   * `hasPerQuestionSentiment` tests for: a dimension verdict cannot be derived from them.
+   */
+  sentiment: 'positive' | 'mixed' | 'negative' | 'neutral' | null
+  /** How much the answer rested on: specifics, a clear statement, or a hedge. */
+  evidenceStrength: 'strong' | 'moderate' | 'weak' | null
 }
 
 /**
@@ -960,6 +978,17 @@ export interface AIVAInterviewDimensionInsight {
   sentiment: 'positive' | 'mixed' | 'negative' | 'neutral'
   keyThemes: string[]
   evidenceStrength: 'strong' | 'moderate' | 'weak'
+  /**
+   * Who decided the sentiment and evidence strength above. `derived` means code voted the
+   * per-question readings of the transcript; `model` means the synthesis stage, which
+   * never saw the transcript, was asked for them — which is what every row written before
+   * the per-question sentiment existed is. Absent on rows older than this field.
+   */
+  sentimentSource?: 'derived' | 'model'
+  /** Share of the dimension's mapped question weight that was actually answered. */
+  coverage?: number
+  /** Quotes behind this dimension that were found in the transcript. */
+  groundedQuotes?: number
   /** Participant user ID (set in batch-level collection for per-participant rows) */
   participantUserId?: string
   /** Participant display name (set in batch-level collection) */
@@ -998,7 +1027,12 @@ export interface AIVAInterviewQualityFlags {
   /** Real names found in output that the prompt asked to be replaced. */
   nameLeaks: string[]
   /** Rows dropped because they failed schema or referenced something unprescribed. */
-  stripped: { questionSummaries: number; dimensionInsights: number }
+  stripped: {
+    questionSummaries: number
+    dimensionInsights: number
+    /** Stage-1 enum values outside the allowed set, read as null. Absent on old rows. */
+    coerced?: number
+  }
   checkedAt: string
 }
 
@@ -1084,6 +1118,11 @@ export interface AIVAFeedbackSummaries {
     keyThemes: string[]
     /** Scored dimensions the batch's interview questions do not reach. */
     uncoveredDimensions?: string[]
+    /**
+     * Answers to interview questions that map to no dimension — the catch-all. Absent on
+     * assessments finalised before anything read them.
+     */
+    generalObservations?: Array<{ participantName?: string; summary: string }>
   }
   qualityFlags?: AIVAFeedbackQualityFlags
 }

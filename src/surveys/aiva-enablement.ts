@@ -743,18 +743,41 @@ export interface AIVAEnablementAnalysisItem {
   }>
 }
 
-/** Full AI analysis result for all work streams */
+/**
+ * What one pillar's analysis call produced.
+ *
+ * The 24 work streams are analysed a pillar at a time, so "the analysis failed" is a
+ * statement about one of six calls rather than about all of them: five good pillars
+ * survive a sixth that timed out, and the reason is recorded against the pillar that
+ * had it.
+ */
+export interface AIVAEnablementPillarOutcome {
+  status: 'ok' | 'failed' | 'skipped'
+  /** Why, when the status is not `ok`. */
+  reason?: string
+  /** Work streams of this pillar the model did not answer for. */
+  missingStreams: string[]
+  duplicateStreams: number
+  stripped: number
+}
+
+/** Full AI analysis result for all work streams, assembled from the six pillar calls. */
 export interface AIVAEnablementAnalysisResult {
   workStreams: AIVAEnablementAnalysisItem[]
   generatedAt: string
   model: string
-  /**
-   * What the completeness check found. A work stream the model skipped gets no AI
-   * analysis at all, which the page used to render as an empty space.
-   */
-  qualityFlags: {
-    missingStreams: string[]
-    duplicateStreams: number
-    stripped: number
-  }
+  /** One entry per pillar, always all six, so a missing call is visible as such. */
+  pillars: Record<AIVAEnablementPillar, AIVAEnablementPillarOutcome>
+}
+
+/**
+ * What is persisted on the assessment about the enablement analysis: which model
+ * produced it, when, and what each pillar's call did. The analysis itself lives on the
+ * programmes; this is the provenance the Scorecard's quality badge reads.
+ */
+export interface AIVAEnablementQualityFlags {
+  generatedAt: string
+  model: string
+  pillars: Record<AIVAEnablementPillar, AIVAEnablementPillarOutcome>
+  checkedAt: string
 }

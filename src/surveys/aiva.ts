@@ -738,8 +738,16 @@ export interface AIVAFeedbackQualityFlags {
     stripped: number
     /** Rows whose sentiment was not one of the four and was written as `neutral`. */
     coerced: number
-    /** Dimensions that had feedback and got no summary. */
+    /**
+     * Dimensions whose questions had answers and which got neither a summary nor an
+     * explicit null. A decline is not one of these: it is the model saying nothing in
+     * the area's feedback speaks to that dimension, which is an answer.
+     */
     missingDimensions: string[]
+    /** Dimensions the model explicitly declined to summarise. Healthy, not a finding. */
+    declined: number
+    /** Answers cut at `MAX_ANSWER_LENGTH` before any model saw them. */
+    truncatedAnswers: number
   }
   checkedAt: string
 }
@@ -1036,6 +1044,16 @@ export interface AIVADimensionFeedbackSummary {
   summary: string // 2-3 sentence summary
   sentiment: 'positive' | 'mixed' | 'negative' | 'neutral'
   keyThemes: string[] // 2-4 bullet themes
+  /**
+   * The open-feedback questions this summary drew on.
+   *
+   * One question's answers now reach several dimensions, so which of them a summary
+   * actually rests on is no longer implied by the dimension key. Absent on rows written
+   * before the per-question collection.
+   */
+  questionIds?: string[]
+  /** Distinct answers the summary drew on — never a count of copies. */
+  answerCount?: number
 }
 
 /**
@@ -1047,6 +1065,14 @@ export interface AIVAFeedbackSummaries {
     startDoing: string[] // 3-5 concrete actions
     stopDoing: string[] // 2-4 items (only if clearly supported)
     majorThemes: string[] // 3-5 cross-cutting themes
+    /**
+     * What the catch-all open question raised that no dimension question captured.
+     *
+     * `feedback_open_1` maps to no dimension, so until now nothing read it at all: the
+     * answers were collected, counted and never shown to a model. `null` when nobody
+     * answered it, or when the answers added nothing the dimension summaries did not.
+     */
+    generalFeedback?: string | null
   }
   dimensionSummaries: AIVADimensionFeedbackSummary[]
   generatedAt: string // ISO timestamp

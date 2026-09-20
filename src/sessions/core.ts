@@ -58,10 +58,10 @@ export interface AgentSession {
   id: string
   provider: string
   repositoryName: string
-  repositoryId: string | null // Foreign key to repositories table (desktop only)
+  repositoryId: string | null // Foreign key to repositories table (client-side only)
   sessionId: string
   fileName: string | null
-  filePath: string | null // Path to session file (R2 path for server, local path for desktop)
+  filePath: string | null // Path to session file (R2 path for server, local path client-side)
   fileSize: number | null
   userId: string
   username: string

@@ -57,7 +57,6 @@ pnpm build
 
 ## Related Packages
 
-- [@guidemode/desktop](https://github.com/guidemode/desktop) - Desktop app
 - [@guidemode/session-processing](https://github.com/guidemode/session-processing) - Analytics engine
 - [@guidemode/cli](https://github.com/guidemode/cli) - CLI tool
 
@@ -68,5 +67,5 @@ MIT License - see [LICENSE](LICENSE)
 ## Support
 
 - 💬 [**Discussions**](https://github.com/orgs/guidemode/discussions) - Ask questions, share ideas
-- 🐛 [**Issues**](https://github.com/guidemode/desktop/issues) - Report bugs, request features
+- 🐛 [**Issues**](https://github.com/guidemode/cli/issues) - Report bugs, request features
 - 📧 **Email**: support@guidemode.dev

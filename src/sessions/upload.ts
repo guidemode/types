@@ -1,10 +1,10 @@
 import type { SessionPhaseAnalysis } from './ai-analysis.js'
 import type { ProcessingStatus } from './core.js'
 
-// Session upload types for desktop -> server sync
+// Session upload types for client -> server sync
 
 /**
- * Session upload request - syncs session from desktop to server
+ * Session upload request - syncs a session from the CLI to the server
  */
 export interface SessionUploadRequest {
   provider: string

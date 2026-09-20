@@ -15,7 +15,7 @@ export interface ProcessorContext {
   tenantId: string
   userId: string
   provider: string
-  // Optional git diff data from desktop app (not available in server context)
+  // Optional git diff data from legacy desktop uploads (not available in server context)
   // biome-ignore lint/suspicious/noExplicitAny: TODO: Extract to dedicated GitDiffData type
   gitDiffData?: any
 }

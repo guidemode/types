@@ -1,7 +1,7 @@
 import type { BaseMetrics } from './types.js'
 
 /**
- * Git diff metrics - desktop-only, all providers
+ * Git diff metrics - legacy desktop uploads only, all providers
  * Tracks code changes made during a session
  */
 export interface GitDiffMetrics extends BaseMetrics {

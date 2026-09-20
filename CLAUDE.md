@@ -38,7 +38,7 @@ src/
 │   ├── errors.ts        # ErrorMetrics
 │   ├── assessment.ts    # AssessmentMetrics, AssessmentSession
 │   ├── context.ts       # ContextManagementMetrics (Claude Code)
-│   ├── git-diff.ts      # GitDiffMetrics (desktop)
+│   ├── git-diff.ts      # GitDiffMetrics (legacy desktop uploads)
 │   └── utilities.ts     # Helper functions (extractToolUses, etc.)
 │
 ├── github/              # GitHub integration
@@ -218,7 +218,7 @@ See `provider-docs/SCHEMA_GENERATION.md` for how to generate schemas from JSONL 
 
 **Location:** `src/sessions/messages.ts`
 
-The canonical format types define the universal JSONL structure that all providers convert to in the Rust desktop app. These types are used throughout the session processing pipeline.
+The canonical format types define the universal JSONL structure that every provider converts to. These types are used throughout the session processing pipeline.
 
 **Core Types:**
 ```typescript
@@ -262,7 +262,6 @@ type ContentBlock =
 - Enables unified session analytics
 
 **Related:**
-- Rust implementation: `apps/desktop/src-tauri/src/providers/canonical/mod.rs`
 - Parser: `packages/session-processing/src/parsers/canonical/parser.ts`
 
 ### API Types

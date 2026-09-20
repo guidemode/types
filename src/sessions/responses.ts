@@ -42,6 +42,16 @@ export interface SessionDetailResponse {
   fileName: string | null
   filePathR2: string | null
   fileSize: number | null
+  /**
+   * Append parts not yet merged into the object at `filePathR2`.
+   *
+   * `0` means the transcript is that single object. Non-zero means the CLI is
+   * still sending deltas for a live session; they merge at `SessionEnd`, at the
+   * part cap, or when the session is processed.
+   */
+  transcriptParts: number
+  /** Canonical bytes held in those parts, i.e. how much is not yet merged. */
+  transcriptPartBytes: number
   uploadedAt: string
   processingStatus: ProcessingStatus
   queuedAt: string | null

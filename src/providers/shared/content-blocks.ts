@@ -122,6 +122,14 @@ export interface StructuredMessageContent {
   text?: string // Text content (if message type is text)
   toolUse?: ToolUseContent // Tool use (if message type is tool_use)
   toolResult?: ToolResultContent // Tool result (if message type is tool_result)
+  /**
+   * Images pasted into a user message, which DO travel alongside text: a
+   * screenshot arrives as `[{ type: 'text' }, { type: 'image' }]` on one line,
+   * with the text carrying nothing but the `[Image #12]` placeholder. They are
+   * carried here rather than split into their own message so the picture stays
+   * with the sentence that refers to it.
+   */
+  images?: ImageContent[]
 }
 
 /**

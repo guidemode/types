@@ -44,8 +44,9 @@ src/
 ├── github/              # GitHub integration
 │   ├── app.ts           # GitHubAppInstallation, GitHubRepository
 │   ├── webhooks.ts      # Webhook payload types (PR, Team, Member, etc.)
-│   ├── teams.ts         # Team, TeamMemberAssignment
 │   └── sync.ts          # GitHubSyncLog, PRSessionLink
+│
+├── teams.ts             # Team, TeamProviderBinding, TeamMemberAssignment
 │
 ├── queue/               # Queue message types
 │   └── messages.ts      # SessionProcessingMessage, BillingUpdateMessage

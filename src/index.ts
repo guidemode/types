@@ -29,7 +29,6 @@ export * from './metrics/utilities.js'
 // GitHub integration types
 export * from './github/app.js'
 export * from './github/webhooks.js'
-export * from './github/teams.js'
 export * from './github/sync.js'
 
 // Jira integration types
@@ -40,6 +39,9 @@ export * from './work-tracking/index.js'
 
 // Queue message types
 export * from './queue/messages.js'
+
+// Canonical teams and provider bindings
+export * from './teams.js'
 
 // Existing standalone types (keep as-is)
 export * from './auth.js'
